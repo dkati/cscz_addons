@@ -1,1 +1,1 @@
-# cscz_addons
+from ingame UI: Only 'addons' enabled
