@@ -68,3 +68,64 @@ L 05/27/2026 - 00:59:44: GameConfig CRC mismatch for game "*" section "*" librar
 L 05/27/2026 - 00:59:44: -------- Mapchange to cs_minitaly --------
 L 05/27/2026 - 00:59:45: [admin.amxx] Login: "Malakismeno<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
 L 05/27/2026 - 00:59:46: [admin.amxx] Login: "Malakismeno<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/27/2026 - 01:06:06: GameConfig CRC computed engine=EBB1F68C (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\hw.dll)
+L 05/27/2026 - 01:06:06: GameConfig CRC computed server=9B4FBDDA (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\czero\dlls\mp.dll)
+L 05/27/2026 - 01:06:06: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/27/2026 - 01:06:06: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/27/2026 - 01:06:06: -------- Mapchange to cs_minitaly --------
+L 05/27/2026 - 01:06:07: [admin.amxx] Login: "Malakismeno<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/27/2026 - 01:06:07: [admin.amxx] Login: "Malakismeno<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/27/2026 - 01:09:06: GameConfig CRC computed engine=EBB1F68C (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\hw.dll)
+L 05/27/2026 - 01:09:06: GameConfig CRC computed server=9B4FBDDA (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\czero\dlls\mp.dll)
+L 05/27/2026 - 01:09:06: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/27/2026 - 01:09:06: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/27/2026 - 01:09:07: -------- Mapchange to cs_minitaly --------
+L 05/27/2026 - 01:09:07: [admin.amxx] Login: "Malakismeno<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/27/2026 - 01:09:08: [admin.amxx] Login: "Malakismeno<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/27/2026 - 01:16:04: GameConfig CRC computed engine=EBB1F68C (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\hw.dll)
+L 05/27/2026 - 01:16:04: GameConfig CRC computed server=9B4FBDDA (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\czero\dlls\mp.dll)
+L 05/27/2026 - 01:16:04: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/27/2026 - 01:16:04: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/27/2026 - 01:16:04: -------- Mapchange to cs_minitaly --------
+L 05/27/2026 - 01:16:05: [admin.amxx] Login: "Malakismeno<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/27/2026 - 01:16:05: [admin.amxx] Login: "Malakismeno<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/27/2026 - 01:16:18: [admincmd.amxx] Cmd: "Malakismeno<1><STEAM_ID_LAN><>" pause server
+L 05/27/2026 - 01:16:21: [admincmd.amxx] Cmd: "Malakismeno<1><STEAM_ID_LAN><>" unpause server
+L 05/27/2026 - 01:16:25: [admincmd.amxx] Cmd: "Malakismeno<1><STEAM_ID_LAN><>" pause server
+L 05/27/2026 - 01:16:25: [admincmd.amxx] Cmd: "Malakismeno<1><STEAM_ID_LAN><>" unpause server
+L 05/27/2026 - 01:16:30: [admincmd.amxx] Cmd: "Malakismeno<1><STEAM_ID_LAN><>" pause server
+L 05/27/2026 - 01:16:33: [admincmd.amxx] Cmd: "Malakismeno<1><STEAM_ID_LAN><>" unpause server
+L 05/27/2026 - 01:16:35: [admincmd.amxx] Cmd: "Malakismeno<1><STEAM_ID_LAN><>" pause server
+L 05/27/2026 - 01:16:37: [admincmd.amxx] Cmd: "Malakismeno<1><STEAM_ID_LAN><>" unpause server
+L 05/27/2026 - 01:18:40: GameConfig CRC computed engine=EBB1F68C (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\hw.dll)
+L 05/27/2026 - 01:18:40: GameConfig CRC computed server=9B4FBDDA (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\czero\dlls\mp.dll)
+L 05/27/2026 - 01:18:40: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/27/2026 - 01:18:40: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/27/2026 - 01:18:40: -------- Mapchange to cs_minitaly --------
+L 05/27/2026 - 01:18:41: [admin.amxx] Login: "Malakismeno<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/27/2026 - 01:18:42: [admin.amxx] Login: "Malakismeno<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/27/2026 - 01:18:50: [admincmd.amxx] Cmd: "Malakismeno<1><STEAM_ID_LAN><>" pause server
+L 05/27/2026 - 01:18:51: [admincmd.amxx] Cmd: "Malakismeno<1><STEAM_ID_LAN><>" unpause server
+L 05/27/2026 - 01:18:56: [admincmd.amxx] Cmd: "Malakismeno<1><STEAM_ID_LAN><>" pause server
+L 05/27/2026 - 01:18:57: [admincmd.amxx] Cmd: "Malakismeno<1><STEAM_ID_LAN><>" unpause server
+L 05/27/2026 - 02:11:48: GameConfig CRC computed engine=EBB1F68C (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\hw.dll)
+L 05/27/2026 - 02:11:48: GameConfig CRC computed server=9B4FBDDA (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\czero\dlls\mp.dll)
+L 05/27/2026 - 02:11:48: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/27/2026 - 02:11:48: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/27/2026 - 02:11:48: -------- Mapchange to cs_minitaly --------
+L 05/27/2026 - 02:11:49: [admin.amxx] Login: "Malakismeno<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/27/2026 - 02:11:50: [admin.amxx] Login: "Malakismeno<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/27/2026 - 02:17:26: GameConfig CRC computed engine=EBB1F68C (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\hw.dll)
+L 05/27/2026 - 02:17:26: GameConfig CRC computed server=9B4FBDDA (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\czero\dlls\mp.dll)
+L 05/27/2026 - 02:17:26: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/27/2026 - 02:17:26: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/27/2026 - 02:17:26: -------- Mapchange to cs_minitaly --------
+L 05/27/2026 - 02:17:27: [admin.amxx] Login: "Malakismeno<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/27/2026 - 02:17:28: [admin.amxx] Login: "Malakismeno<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/27/2026 - 02:19:55: GameConfig CRC computed engine=EBB1F68C (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\hw.dll)
+L 05/27/2026 - 02:19:55: GameConfig CRC computed server=9B4FBDDA (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\czero\dlls\mp.dll)
+L 05/27/2026 - 02:19:55: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/27/2026 - 02:19:55: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/27/2026 - 02:19:55: -------- Mapchange to cs_minitaly --------
+L 05/27/2026 - 02:19:56: [admin.amxx] Login: "Malakismeno<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/27/2026 - 02:19:57: [admin.amxx] Login: "Malakismeno<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")

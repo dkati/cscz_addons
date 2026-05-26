@@ -1,60 +1,62 @@
 #include <amxmodx>
 
-// Global variables to remember the alive players
-new g_AliveCT = 0;
-new g_AliveT = 0;
+// New variables to track the team scores
+new g_ScoreCT = 0;
+new g_ScoreT = 0;
 
 public plugin_init() {
-    register_plugin("Enemy Alive Counter Glued", "2.0", "Author");
+    register_plugin("Enemy Alive & Score Auto-Correct", "2.2", "Author");
     
-    // Hook events so we ONLY calculate when someone dies or spawns
     register_event("DeathMsg", "trigger_calculation", "a");
-    register_logevent("trigger_calculation", 2, "1=Round_Start");
     
-    // This loop keeps the text permanently glued to the screen
+    // Hook the engine's built-in score update event
+    register_event("TeamScore", "event_team_score", "a");
+    
     set_task(1.0, "refresh_hud", _, _, _, "b");
 }
 
-public trigger_calculation() {
-    // We delay the count by 0.1 seconds because when a kill happens, 
-    // the engine needs a fraction of a second to register the victim as "dead".
-    set_task(0.1, "calculate_alive");
+// This function catches the score from the server every time it changes
+public event_team_score() {
+    new team[32];
+    read_data(1, team, 31); // 1st piece of data is the Team Name ("CT" or "TERRORIST")
+    new score = read_data(2); // 2nd piece of data is the integer score
+    
+    if (equal(team, "CT")) {
+        g_ScoreCT = score;
+    } else if (equal(team, "TERRORIST")) {
+        g_ScoreT = score;
+    }
 }
 
-public calculate_alive() {
-    new players[32], count;
-    get_players(players, count, "a"); // "a" gets alive players only
-    
-    // Reset counters
-    g_AliveCT = 0;
-    g_AliveT = 0;
-    
-    // Count them
-    for (new j = 0; j < count; j++) {
-        if (get_user_team(players[j]) == 1) g_AliveT++;
-        else if (get_user_team(players[j]) == 2) g_AliveCT++;
-    }
-    
-    // Instantly redraw the HUD so the number drops the exact moment of the kill
-    refresh_hud();
+public trigger_calculation() {
+    set_task(0.1, "refresh_hud");
 }
 
 public refresh_hud() {
-    new players[32], count;
-    get_players(players, count); // Get ALL connected players to show them the text
+    new alive_players[32], alive_count;
+    get_players(alive_players, alive_count, "a"); 
+    
+    new numT = 0, numCT = 0;
+    
+    for (new j = 0; j < alive_count; j++) {
+        if (get_user_team(alive_players[j]) == 1) numT++;
+        else if (get_user_team(alive_players[j]) == 2) numCT++;
+    }
+    
+    new all_players[32], count;
+    get_players(all_players, count); 
     
     for (new j = 0; j < count; j++) {
-        new id = players[j];
+        new id = all_players[j];
         
-        // FIXED FLICKERING:
-        // 1. HoldTime is 1.1s (overlaps the 1.0s task perfectly)
-        // 2. Channel is 3 (Fixed channel so it smoothly overwrites itself)
         set_hudmessage(0, 255, 0, 0.005, 0.15, 0, 0.0, 1.1, 0.0, 0.0, 3);
         
         if (get_user_team(id) == 1) { 
-            show_hudmessage(id, "Ζωντανοί Μπαλαμοί: %d", g_AliveCT);
+            // If you are Terrorist: Show T Score, then Alive CTs
+            show_hudmessage(id, "Πόσες νίκις έχομι: %d^nΖωντανοί Μπαλαμοί: %d", g_ScoreT, numCT);
         } else if (get_user_team(id) == 2) { 
-            show_hudmessage(id, "Ζωντανοί Γιούφτοι: %d", g_AliveT);
+            // If you are CT: Show CT Score, then Alive Ts
+            show_hudmessage(id, "Πόσες νίκις έχομι: %d^nΖωντανοί Γιούφτοι: %d", g_ScoreCT, numT);
         }
     }
 }

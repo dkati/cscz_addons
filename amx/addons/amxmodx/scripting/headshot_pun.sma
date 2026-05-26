@@ -64,7 +64,7 @@ public event_deathmsg() {
 
 public refresh_hud() {
     if (g_LineCount > 0) {
-        set_hudmessage(0, 255, 0, 0.005, 0.17, 0, 0.0, 1.1, 0.0, 0.0, 4)
+        set_hudmessage(0, 255, 0, 0.005, 0.20, 0, 0.0, 1.1, 0.0, 0.0, 4)
         
         // Added the (%d/%d) variables to the header
         show_hudmessage(0, "== Τίμπες (%d/%d) ==^n%s", g_TotalHeadshots, g_EnemyCount, g_FinalMsg)
