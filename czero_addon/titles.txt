@@ -1221,7 +1221,7 @@ You can't vote with less than three people on your team
 
 Game_will_restart_in
 {
-The game will restart in %s %s
+Επανεκκίνηση %s %s
 }
 
 Cover_me
@@ -1394,7 +1394,7 @@ at the console.
 
 Hint_lost_money
 {
-You have lost money for killing a hostage.
+ναπαναγαμηθουν οι χοστετζάδες
 }
 
 Hint_removed_for_next_hostage_killed
@@ -1440,7 +1440,7 @@ and plant it by holding FIRE!
 Hint_hostage_rescue_zone
 {
 Δεν υπάρχει περίπτωση να σώσουμε hostages.
-Ξεχασέτο
+Ξέχασέτο
 }
 
 Hint_terrorist_escape_zone
@@ -1492,8 +1492,8 @@ Make your way to the safety zones!
 
 Hint_out_of_ammo
 {
-You are out of ammunition.
-Return to a buy zone to purchase more.
+Σφαίρες δεν με έχεις.
+Νταούλι
 }
 
 Hint_spotted_a_friend
