@@ -1,47 +1,47 @@
 ﻿Team_Select
 {
-\ySelect a team\w
+\yΕπιλογή ομάδας\w
 
-1. Tromokratikes dynameis
-2. 1312 Antitromokratiki
+1. Γιούφτοι
+2. Μπαλαμοί
 
-5. aftomati epilogi
+5. Αυτόματο
 }
 
 Team_Select_Spect
 {
-\ySelect a team\w
+\yΕπιλογή ομάδας\w
 
-1. Tromokratikes dynameis
-2. 1312 Antitromokratiki
+1. Γιούφτοι
+2. Μπαλαμοί
 
-5. aftomati epilogi
-6. komparsos
+5. Αυτόματο
+6. Κομπάρσος
 }
 
 IG_Team_Select
 {
-\ySelect a team\w
+\yΕπιλογή ομάδας\w
 
-1. Tromokratikes dynameis
-2. 1312 Antitromokratiki
+1. Γιούφτοι
+2. Μπαλαμοί
 
-5. aftomati epilogi
+5. Αυτόματο
 
-0. Exit
+0. Έξοδος
 }
 
 IG_Team_Select_Spect
 {
 \ySelect a team\w
 
-1. Tromokratikes dynameis
-2. 1312 Antitromokratiki
+1. Γιούφτοι
+2. Μπαλαμοί
 
-5. aftomati epilogi
-6. komparsos
+5. Αυτόματο
+6. Κομπάρσος
 
-0. bb
+0. Έξοδος
 }
 
 IG_VIP_Team_Select
@@ -367,45 +367,45 @@ RadioA
 {
 \yRadio Commands\w
 
-1. "Epatha ola"
-2. "Pami na skotosomi"
-3. "Gke mprao gkegke"
-4. "Xristopanagia"
-5. "...podia"
-6. "Tafto"
+1. "Έπαθα όλα"
+2. "Παμι να σκοτώσωμι"
+3. "Γκεγκε μπραο γκε"
+4. "Χριστοπαναγία"
+5. "...ποδια"
+6. "Ταφτο"
 
-0. Exit
+0. Κλείσιμο
 }
 
 RadioB
 {
 \yGroup Radio Commands\w
 
-1. "Ntou!"
-2. "Pese pisw"
-3. "Kolla mazi omada"
-4. "Pare mesa thesi"
-5. "Kataigida to mprosta"
-6. "Anafora mesa"
+1. "Ντου!"
+2. "Πέσε πίσω"
+3. "Κόλλα μαζί ομάδα"
+4. "Πάρε μέσα θέση"
+5. "Καταιγίδα το μπροστά"
+6. "Αναφορά μέσα"
 
-0. Exit
+0. Κλείσιμο
 }
 
 RadioC
 {
 \yRadio Responses/Reports\w
 
-1. "RE KANE AKRI RE"
-2. "RE FUGE RE MLK RE BRO"
-3. "Xreiazomai pisopanw"
-4. "MPOUGATSAS"
-5. "ANTE RE MALAKA XONTRE"
-6. "EEEE...EEEE"	
-7. "Auti pigainei na fisiksei"
-8. "XRONIA POLLA"
-9. "AMARTIA"
+1. "Ρε κάνε άκρη ρε"
+2. "Ρε φύγε ρε μλκ ρε μπρο"
+3. "Χρειάζομαι πισωπάνω"
+4. "Βλακείες λες πως να μην απαντήσω"
+5. "Αντε ρε μαλακα χοντρέ"
+6. "Καλό είναι"	
+7. "Αυτή πηγαίνει φυσάει"
+8. "Χρόνια πολλά"
+9. "Αμαρτία είναι"
 
-0. Exit
+0. Κλείσιμο
 }
 
 // weapon names
