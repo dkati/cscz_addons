@@ -1066,7 +1066,7 @@ Saved
 
 Game_Commencing
 {
-Game Commencing!
+Κάτσε βε λίγο...
 }
 
 Game_connected
