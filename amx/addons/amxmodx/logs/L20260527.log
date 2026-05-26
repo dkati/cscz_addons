@@ -1,0 +1,14 @@
+L 05/27/2026 - 00:00:54: GameConfig CRC computed engine=EBB1F68C (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\hw.dll)
+L 05/27/2026 - 00:00:54: GameConfig CRC computed server=9B4FBDDA (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\czero\dlls\mp.dll)
+L 05/27/2026 - 00:00:54: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/27/2026 - 00:00:54: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/27/2026 - 00:00:55: -------- Mapchange to cs_minitaly --------
+L 05/27/2026 - 00:01:00: [admin.amxx] Login: "Malakismeno<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/27/2026 - 00:01:01: [admin.amxx] Login: "Malakismeno<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/27/2026 - 00:14:24: GameConfig CRC computed engine=EBB1F68C (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\hw.dll)
+L 05/27/2026 - 00:14:24: GameConfig CRC computed server=9B4FBDDA (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\czero\dlls\mp.dll)
+L 05/27/2026 - 00:14:24: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/27/2026 - 00:14:24: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/27/2026 - 00:14:25: -------- Mapchange to cs_minitaly --------
+L 05/27/2026 - 00:14:25: [admin.amxx] Login: "Malakismeno<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/27/2026 - 00:14:26: [admin.amxx] Login: "Malakismeno<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
