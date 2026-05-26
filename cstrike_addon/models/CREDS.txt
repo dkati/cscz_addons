@@ -1,0 +1,23 @@
+Black Hawk Down M4A1
+
+Reciever/Silencer/Mag Model: {GDF} Hopsefloh
+Reciever/Silencer/Mag Skin: {GDF} Hopsefloh
+Animations: Strykerwolf (edited by S7OK3), Jennifer!!
+bullethead for modelling the little things on the silencer
+CZ Arms - Ritual Entertainment
+Rest Of Model by: Tin Soldier (aka Reggie Dog)
+Tin Soldiers Camo Reskin: SmashCase
+Aimpoint Model - snark
+dot.bmp(aimpoint) - snark
+aimpoint.bmp - -X- & 4130, some parts remapped by LooK OuT!
+5.bmp - Version_2
+Bullet by Snark
+Robert Olender for arm skin
+Flashlight Model/Skin: S7Ok3 (skin edited by idleloss)
+Sounds: Vunsunta
+Screenies and such thanks to Impromtu. Stuff im too lazy to do meself.
+Hack/Compile/tex recolours/Renders/T-bit on Jenns anims - Freemen
+
+o and just like always, games-fusion can go fuck yourselves cause the authors have put lots of time and effort into making this model/file and this MUST be respected, therefore any commercial use or financial gain of this file is PROHIBITED. (Quoted = Stokes Readme)
+
+Don't hack kids, its wrong!!
