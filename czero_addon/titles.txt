@@ -683,7 +683,7 @@ OK
 
 Menu_Cancel
 {
-Cancel
+Ακυρο
 }
 
 Menu_Spectate
@@ -698,12 +698,12 @@ Auto Assign
 
 Title_SelectYourTeam
 {
-Select Your Team
+Επιλογή ομάδας
 }
 
 Target_Bombed
 {
-Target Succesfully Bombed!
+Μπανταο
 }
 
 VIP_Escaped
@@ -735,17 +735,17 @@ all been neutralized!
 
 Bomb_Defused
 {
-The bomb has been defused!
+Βγήκε
 }
 
 CTs_Win
 {
-Counter-Terrorists Win!
+Οι μπαλαμοί νίκησαν!
 }
 
 Terrorists_Win
 {
-Terrorists Win!
+Οι γιούφτοι νίκησαν!
 }
 
 Round_Draw
@@ -785,7 +785,7 @@ You cannot buy this item!
 
 Not_Enough_Money
 {
-You have insufficient funds!
+Δεν υπάρχει σάλιο!
 }
 
 Weapon_Not_Available
@@ -815,12 +815,12 @@ Already_Have_Helmet_Bought_Kevlar
 
 Cannot_Carry_Anymore
 {
-You cannot carry anymore!
+Εχεις ηδη βε!
 }
 
 Already_Have_One
 {
-You already have one!
+Εχεις ηδη βε!
 }
 
 Cannot_Switch_From_VIP
@@ -906,12 +906,12 @@ Defusing bomb WITHOUT Defuse kit.
 
 Killed_Hostage
 {
-You killed a hostage!
+Ψωφος
 }
 
 Injured_Hostage
 {
-You injured a hostage!
+Αντε γαμήσου χοστετζ
 }
 
 Auto_Team_Balance_Next_Round
@@ -942,7 +942,7 @@ You cannot vote within 3 minutes of a new map
 
 Weapon_Cannot_Be_Dropped
 {
-This weapon cannot be dropped
+Το μαχαιρι θα πεταξεις βε?
 }
 
 Terrorist_Escaped
@@ -952,7 +952,7 @@ A terrorist has escaped!
 
 C4_Plant_At_Bomb_Spot
 {
-C4 must be planted at a bomb site!
+Μπηκε γαμω το σπιτι
 }
 
 C4_Plant_Must_Be_On_Ground
@@ -969,7 +969,7 @@ C4 can only be placed at a Bomb Target.
 
 Bomb_Planted
 {
-The bomb has been planted!
+Η μπομπα μπηκι
 }
 
 C4_Activated_At_Bomb_Spot
@@ -979,17 +979,17 @@ C4 must be activated at a Bomb Target
 
 Switch_To_BurstFire
 {
-Switched to Burst-Fire mode
+Τρεις Τρεις
 }
 
 Switch_To_SemiAuto
 {
-Switched to semi-automatic
+ΗμιΑυτόματο
 }
 
 Switch_To_FullAuto
 {
-Switched to automatic
+Αυτόματο
 }
 
 //***************************
@@ -1380,7 +1380,7 @@ Votes
 
 Hint_press_buy_to_purchase
 {
-Press the BUY key to purchase items.
+Μη ξεχάσεις να φτιάξεις ψωνια
 }
 
 Hint_use_nightvision
@@ -1422,9 +1422,7 @@ You have been rewarded $2500 for killing the VIP!
 
 Hint_win_round_by_killing_enemy
 {
-You killed an Enemy!
-Win the round by eliminating
-the opposing force.
+Ετσι. Στην πιπα
 }
 
 Hint_try_not_to_injure_teammates
@@ -1441,8 +1439,8 @@ and plant it by holding FIRE!
 
 Hint_hostage_rescue_zone
 {
-You are in a hostage rescue zone.
-Find the hostages and bring them here!
+Δεν υπάρχει περίπτωση να σώσουμε hostages.
+Ξεχασέτο
 }
 
 Hint_terrorist_escape_zone
@@ -1471,15 +1469,12 @@ round because you TK'd last round.
 
 Hint_use_hostage_to_stop_him
 {
-You may USE the hostage again to
-stop him from following.
+Στα παπαρια μου οι χοστετζ
 }
 
 Hint_lead_hostage_to_rescue_point
 {
-Lead the hostage to the rescue point!
-You may USE the hostage again to
-stop him from following.
+Στα παπαρια μου οι χοστετζ
 }
 
 Hint_you_have_the_bomb
@@ -1503,12 +1498,12 @@ Return to a buy zone to purchase more.
 
 Hint_spotted_a_friend
 {
-You have spotted a friend.
+Φιλαρακι σου
 }
 
 Hint_spotted_an_enemy
 {
-You have spotted an enemy.
+ΦΑΤΟΥΝΑΑΑΑΑΑΑΑΑ
 }
 
 Hint_prevent_hostage_rescue
@@ -1524,7 +1519,7 @@ Rescue the hostages for money!
 
 Hint_press_use_so_hostage_will_follow
 {
-Press USE to get the hostage to follow you.
+Στα παπαρια μου οι χοστετζ
 }
 
 Friend
