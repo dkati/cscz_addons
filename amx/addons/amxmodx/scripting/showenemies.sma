@@ -1,35 +1,60 @@
 #include <amxmodx>
-#include <amxmisc>
+
+// Global variables to remember the alive players
+new g_AliveCT = 0;
+new g_AliveT = 0;
 
 public plugin_init() {
-    register_plugin("Enemy Alive Counter", "1.0", "Author");
-    set_task(1.0, "display_enemy_count", _, _, _, "b");
+    register_plugin("Enemy Alive Counter Glued", "2.0", "Author");
+    
+    // Hook events so we ONLY calculate when someone dies or spawns
+    register_event("DeathMsg", "trigger_calculation", "a");
+    register_logevent("trigger_calculation", 2, "1=Round_Start");
+    
+    // This loop keeps the text permanently glued to the screen
+    set_task(1.0, "refresh_hud", _, _, _, "b");
 }
 
-public display_enemy_count() {
-    new players[32], numCT, numT, i;
+public trigger_calculation() {
+    // We delay the count by 0.1 seconds because when a kill happens, 
+    // the engine needs a fraction of a second to register the victim as "dead".
+    set_task(0.1, "calculate_alive");
+}
+
+public calculate_alive() {
+    new players[32], count;
+    get_players(players, count, "a"); // "a" gets alive players only
     
-    get_players(players, i, "a"); 
+    // Reset counters
+    g_AliveCT = 0;
+    g_AliveT = 0;
     
-    for (new j = 0; j < i; j++) {
-        if (get_user_team(players[j]) == 1) numT++;
-        else if (get_user_team(players[j]) == 2) numCT++;
+    // Count them
+    for (new j = 0; j < count; j++) {
+        if (get_user_team(players[j]) == 1) g_AliveT++;
+        else if (get_user_team(players[j]) == 2) g_AliveCT++;
     }
     
-    new all_players[32], count;
-    get_players(all_players, count);
+    // Instantly redraw the HUD so the number drops the exact moment of the kill
+    refresh_hud();
+}
+
+public refresh_hud() {
+    new players[32], count;
+    get_players(players, count); // Get ALL connected players to show them the text
     
     for (new j = 0; j < count; j++) {
-        new id = all_players[j];
+        new id = players[j];
         
-        // Settings: Red, Green, Blue, X, Y, Effects, FxTime, HoldTime, FadeIn, FadeOut, Channel
-        // Changed Y to 0.15 (higher), Color to (0, 255, 0) (Green), and Fades to 0.0 (Solid)
-        set_hudmessage(0, 255, 0, 0.01, 0.15, 0, 0.0, 1.0, 0.0, 0.0, -1);
+        // FIXED FLICKERING:
+        // 1. HoldTime is 1.1s (overlaps the 1.0s task perfectly)
+        // 2. Channel is 3 (Fixed channel so it smoothly overwrites itself)
+        set_hudmessage(0, 255, 0, 0.005, 0.15, 0, 0.0, 1.1, 0.0, 0.0, 3);
         
         if (get_user_team(id) == 1) { 
-            show_hudmessage(id, "Ζωντανοί Μπαλαμοί: %d", numCT);
+            show_hudmessage(id, "Ζωντανοί Μπαλαμοί: %d", g_AliveCT);
         } else if (get_user_team(id) == 2) { 
-            show_hudmessage(id, "Ζωντανοί Γιούφτοι: %d", numT);
+            show_hudmessage(id, "Ζωντανοί Γιούφτοι: %d", g_AliveT);
         }
     }
 }
