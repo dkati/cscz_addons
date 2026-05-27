@@ -49,7 +49,7 @@ public refresh_hud() {
     for (new j = 0; j < count; j++) {
         new id = all_players[j];
         
-        set_hudmessage(0, 255, 0, 0.005, 0.15, 0, 0.0, 1.1, 0.0, 0.0, 3);
+        set_hudmessage(0, 255, 0, 0.6, 0.005, 0, 0.0, 1.1, 0.0, 0.0, 3);
         
         if (get_user_team(id) == 1) { 
             // If you are Terrorist: Show T Score, then Alive CTs
