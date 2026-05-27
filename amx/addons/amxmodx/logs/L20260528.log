@@ -1,0 +1,30 @@
+L 05/28/2026 - 00:12:06: -------- Mapchange to de_truth_cz --------
+L 05/28/2026 - 00:12:06: [admin.amxx] Login: "a<42><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/28/2026 - 00:12:07: [admin.amxx] Login: "a<42><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/28/2026 - 00:16:24: GameConfig CRC computed engine=EBB1F68C (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\hw.dll)
+L 05/28/2026 - 00:16:24: GameConfig CRC computed server=9B4FBDDA (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\czero\dlls\mp.dll)
+L 05/28/2026 - 00:16:24: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/28/2026 - 00:16:24: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/28/2026 - 00:16:25: -------- Mapchange to de_truth_cz --------
+L 05/28/2026 - 00:16:30: [admin.amxx] Login: "a<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/28/2026 - 00:16:31: [admin.amxx] Login: "a<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/28/2026 - 00:45:13: -------- Mapchange to fy_iceworld --------
+L 05/28/2026 - 00:45:14: [admin.amxx] Login: "a<19><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/28/2026 - 00:45:15: [admin.amxx] Login: "a<19><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/28/2026 - 01:02:09: -------- Mapchange to fy_iceworld --------
+L 05/28/2026 - 01:02:10: [admin.amxx] Login: "a<33><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/28/2026 - 01:02:11: [admin.amxx] Login: "a<33><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/28/2026 - 01:20:04: GameConfig CRC computed engine=EBB1F68C (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\hw.dll)
+L 05/28/2026 - 01:20:04: GameConfig CRC computed server=9B4FBDDA (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\czero\dlls\mp.dll)
+L 05/28/2026 - 01:20:04: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/28/2026 - 01:20:04: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/28/2026 - 01:20:04: -------- Mapchange to fy_iceworld --------
+L 05/28/2026 - 01:20:08: [admin.amxx] Login: "a<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/28/2026 - 01:20:09: [admin.amxx] Login: "a<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/28/2026 - 01:22:04: GameConfig CRC computed engine=EBB1F68C (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\hw.dll)
+L 05/28/2026 - 01:22:04: GameConfig CRC computed server=9B4FBDDA (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\czero\dlls\mp.dll)
+L 05/28/2026 - 01:22:04: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/28/2026 - 01:22:04: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/28/2026 - 01:22:04: -------- Mapchange to fy_iceworld --------
+L 05/28/2026 - 01:22:07: [admin.amxx] Login: "a<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/28/2026 - 01:22:08: [admin.amxx] Login: "a<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
