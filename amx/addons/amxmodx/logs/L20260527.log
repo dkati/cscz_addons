@@ -178,3 +178,32 @@ L 05/27/2026 - 22:41:31: GameConfig CRC mismatch for game "*" section "*" librar
 L 05/27/2026 - 22:41:31: -------- Mapchange to cs_minitaly --------
 L 05/27/2026 - 22:41:35: [admin.amxx] Login: "A<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
 L 05/27/2026 - 22:41:36: [admin.amxx] Login: "A<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/27/2026 - 22:46:36: GameConfig CRC computed engine=EBB1F68C (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\hw.dll)
+L 05/27/2026 - 22:46:36: GameConfig CRC computed server=9B4FBDDA (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\czero\dlls\mp.dll)
+L 05/27/2026 - 22:46:36: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/27/2026 - 22:46:36: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/27/2026 - 22:46:37: -------- Mapchange to cs_minitaly --------
+L 05/27/2026 - 22:46:41: [admin.amxx] Login: "A<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/27/2026 - 22:46:42: [admin.amxx] Login: "A<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/27/2026 - 22:49:28: GameConfig CRC computed engine=EBB1F68C (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\hw.dll)
+L 05/27/2026 - 22:49:28: GameConfig CRC computed server=9B4FBDDA (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\czero\dlls\mp.dll)
+L 05/27/2026 - 22:49:28: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/27/2026 - 22:49:28: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/27/2026 - 22:49:28: -------- Mapchange to cs_minitaly --------
+L 05/27/2026 - 22:49:32: [admin.amxx] Login: "A<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/27/2026 - 22:49:33: [admin.amxx] Login: "A<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/27/2026 - 22:52:48: GameConfig CRC computed engine=EBB1F68C (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\hw.dll)
+L 05/27/2026 - 22:52:48: GameConfig CRC computed server=9B4FBDDA (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\czero\dlls\mp.dll)
+L 05/27/2026 - 22:52:48: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/27/2026 - 22:52:48: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/27/2026 - 22:52:48: -------- Mapchange to cs_minitaly --------
+L 05/27/2026 - 22:52:53: [admin.amxx] Login: "A<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/27/2026 - 22:52:54: [admin.amxx] Login: "A<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/27/2026 - 22:54:08: [admin.amxx] Login: "AG<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/27/2026 - 22:58:01: GameConfig CRC computed engine=EBB1F68C (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\hw.dll)
+L 05/27/2026 - 22:58:01: GameConfig CRC computed server=9B4FBDDA (C:\Program Files (x86)\Steam\steamapps\common\Half-Life\czero\dlls\mp.dll)
+L 05/27/2026 - 22:58:01: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/27/2026 - 22:58:01: GameConfig CRC mismatch for game "*" section "*" library "engine" platform "windows" expected 2C9EDE6B got EBB1F68C
+L 05/27/2026 - 22:58:01: -------- Mapchange to cs_minitaly --------
+L 05/27/2026 - 22:58:05: [admin.amxx] Login: "AG<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
+L 05/27/2026 - 22:58:06: [admin.amxx] Login: "AG<1><STEAM_ID_LAN><>" became an admin (account "loopback") (access "abcdefghijklmnopqrstuv") (address "loopback")
