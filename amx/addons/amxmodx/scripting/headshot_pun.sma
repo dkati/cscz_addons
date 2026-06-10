@@ -76,12 +76,13 @@ public refresh_hud() {
         new szMessage[512]
         new len = 0
         
-        len += formatex(szMessage[len], 511 - len, "== Τίμπες (%d/%d) ==^n", g_CT_TotalHeadshots, g_CT_TotalKills)
+        len += formatex(szMessage[len], 511 - len, "== %d τιμπες συνολικά, %d κιλς ==^n", g_CT_TotalHeadshots, g_CT_TotalKills)
         
         for (new i = 1; i <= 32; i++) {
             if (is_user_connected(i) && get_user_team(i) == 2 && g_PlayerKills[i] > 0) {
                 get_user_name(i, name, 31)
-                len += formatex(szMessage[len], 511 - len, "%s: %d/%d^n", name, g_PlayerHeadshots[i], g_CT_TotalKills)
+                // CHANGED: Replaced g_CT_TotalKills with g_PlayerKills[i]
+                len += formatex(szMessage[len], 511 - len, "%s: %d τίμπες,%d κιλς^n", name, g_PlayerHeadshots[i], g_PlayerKills[i])
             }
         }
         
@@ -101,7 +102,8 @@ public refresh_hud() {
         for (new i = 1; i <= 32; i++) {
             if (is_user_connected(i) && get_user_team(i) == 2 && g_PlayerHEKills[i] > 0) {
                 get_user_name(i, name, 31)
-                lenHE += formatex(szHEMessage[lenHE], 511 - lenHE, "%s: %d/%d^n", name, g_PlayerHEKills[i], g_CT_TotalKills)
+                // CHANGED: Replaced g_CT_TotalKills with g_PlayerKills[i]
+                lenHE += formatex(szHEMessage[lenHE], 511 - lenHE, "%s: %d/%d^n", name, g_PlayerHEKills[i], g_PlayerKills[i])
             }
         }
 
