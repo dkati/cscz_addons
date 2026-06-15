@@ -1524,22 +1524,22 @@ Hint_press_use_so_hostage_will_follow
 
 Friend
 {
-Friend
+Φιλαρακι
 }
 
 Enemy
 {
-Enemy
+Γιουφτος
 }
 
 Hostage
 {
-Hostage
+Μαλακας
 }
 
 Health
 {
-Health
+Πιεση
 }
 
 Map_descr_not_avail
