@@ -85,10 +85,125 @@ namespace installer
 
         private void button3_Click(object sender, EventArgs e)
         {
-            if (selectedHLDir == string.Empty || selectedModDir == string.Empty)
+            if (string.IsNullOrEmpty(selectedHLDir) || string.IsNullOrEmpty(selectedModDir))
             {
-                MessageBox.Show("Please select both the Half-Life directory and the Mod directory before proceeding.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Please select both directories first.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
+            }
+
+            try
+            {
+                Dictionary<string, string> deletionMap = new Dictionary<string, string>
+    {
+        { Path.Combine(selectedHLDir, "czero", "custom.hpk"), "Tattoo fix" } 
+       
+    };
+
+                // 2. Execute Deletions BEFORE running copy operations
+                foreach (KeyValuePair<string, string> target in deletionMap)
+                {
+                    string pathToDelete = target.Key;
+                    string description = target.Value;
+
+                    // Check if the target path points to an individual FILE
+                    if (File.Exists(pathToDelete))
+                    {
+                        File.Delete(pathToDelete);
+                        // Optional: Log it somewhere or update a status label
+                        // lblStatus.Text = $"Purged: {description}";
+                    }
+                    // Check if the target path points to an entire DIRECTORY (Folder)
+                    else if (Directory.Exists(pathToDelete))
+                    {
+                        // recursive: true forces it to delete all files and subfolders inside it, 
+                        // otherwise Windows throws an "IO Exception: Directory not empty" crash.
+                        Directory.Delete(pathToDelete, recursive: true);
+                    }
+                }
+
+                // 1. Dictionary for Folders (Directories)
+                Dictionary<string, string> folderMap = new Dictionary<string, string>
+        {
+            { Path.Combine(selectedModDir, "amx","liblist.gam"), Path.Combine(selectedHLDir, "czero","liblist.gam") },
+            { Path.Combine(selectedModDir, "COPY TO ROOT","platform","servers","serverbrowser_english.txt"), Path.Combine(selectedHLDir, "platform","servers","serverbrowser_english.txt") },
+            { Path.Combine(selectedModDir, "COPY TO ROOT CZERO","config.cfg"), Path.Combine(selectedHLDir, "czero","config.cfg") },
+            { Path.Combine(selectedModDir, "COPY TO ROOT CZERO","custom.hpk"), Path.Combine(selectedHLDir, "czero","custom.hpk") },
+            { Path.Combine(selectedModDir, "COPY TO ROOT CZERO","listenserver.cfg"), Path.Combine(selectedHLDir, "czero","listenserver.cfg") },
+            { Path.Combine(selectedModDir, "COPY TO ROOT CZERO","tempdecal.wad"), Path.Combine(selectedHLDir, "czero","tempdecal.wad") },
+            { Path.Combine(selectedModDir, "COPY TO ROOT CZERO","logos","remapped.bmp"), Path.Combine(selectedHLDir, "czero","logos","remapped.bmp") },
+            { Path.Combine(selectedModDir, "COPY TO ROOT VALVE","resource","valve_english.txt"), Path.Combine(selectedHLDir, "valve","resource","valve_english.txt") },
+            { Path.Combine(selectedModDir, "de_vegas.wad"), Path.Combine(selectedHLDir, "czero","de_vegas.wad") },
+              { Path.Combine(selectedModDir, "de_vegas.wad"), Path.Combine(selectedHLDir, "de_vegas.wad") },
+            
+                };
+
+                // 2. Dictionary for SINGLE FILES
+                // Key = Exact source file path, Value = Exact target destination file path
+                Dictionary<string, string> fileMap = new Dictionary<string, string>
+        {
+            { Path.Combine(selectedModDir, "amx","addons","amxmodx"), Path.Combine(selectedHLDir, "czero","addons","amxmodx")  },
+              { Path.Combine(selectedModDir, "amx","addons","metamod"), Path.Combine(selectedHLDir, "czero","addons","metamod")  },
+                { Path.Combine(selectedModDir, "cstrike_addon"), Path.Combine(selectedHLDir, "cstrike_addon")  },
+                  { Path.Combine(selectedModDir, "czero_addon"), Path.Combine(selectedHLDir, "czero_addon")  },
+                    { Path.Combine(selectedModDir, "czero_downloads"), Path.Combine(selectedHLDir,"czero_downloads")  },
+        };
+
+                // --- Process Folders ---
+                foreach (KeyValuePair<string, string> entry in folderMap)
+                {
+                    if (Directory.Exists(entry.Key))
+                    {
+                        CopyDirectoryRecursive(entry.Key, entry.Value);
+                    }
+                }
+
+                // --- Process Single Files ---
+                foreach (KeyValuePair<string, string> entry in fileMap)
+                {
+                    string sourceFile = entry.Key;
+                    string destFile = entry.Value;
+
+                    // Check if the individual file exists before trying to copy it
+                    if (File.Exists(sourceFile))
+                    {
+                        // Ensure the destination folder tree exists, otherwise File.Copy crashes
+                        string destFolder = Path.GetDirectoryName(destFile);
+                        if (!Directory.Exists(destFolder))
+                        {
+                            Directory.CreateDirectory(destFolder);
+                        }
+
+                        // Copy the single file over (overwrite: true replaces it if it's already there)
+                        File.Copy(sourceFile, destFile, overwrite: true);
+                    }
+                }
+
+                MessageBox.Show("Installation complete!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}", "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // 4. Add this helper method inside your Form1 class to handle subfolders recursively
+        private void CopyDirectoryRecursive(string sourceDir, string targetDir)
+        {
+            // Create the target directory tree if missing
+            Directory.CreateDirectory(targetDir);
+
+            // Copy all individual files
+            foreach (string file in Directory.GetFiles(sourceDir))
+            {
+                string targetFile = Path.Combine(targetDir, Path.GetFileName(file));
+                File.Copy(file, targetFile, overwrite: true); // Force-overwrite files
+            }
+
+            // Recurse cleanly through all subdirectories
+            foreach (string subDir in Directory.GetDirectories(sourceDir))
+            {
+                string targetSubDir = Path.Combine(targetDir, Path.GetFileName(subDir));
+                CopyDirectoryRecursive(subDir, targetSubDir);
             }
         }
     }
