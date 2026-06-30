@@ -1,0 +1,17 @@
+C:\Users\Administrator\Desktop\current projects\cscz_addons\installer_src\installer\bin\Debug\net8.0-windows\installer.exe
+C:\Users\Administrator\Desktop\current projects\cscz_addons\installer_src\installer\bin\Debug\net8.0-windows\installer.deps.json
+C:\Users\Administrator\Desktop\current projects\cscz_addons\installer_src\installer\bin\Debug\net8.0-windows\installer.runtimeconfig.json
+C:\Users\Administrator\Desktop\current projects\cscz_addons\installer_src\installer\bin\Debug\net8.0-windows\installer.dll
+C:\Users\Administrator\Desktop\current projects\cscz_addons\installer_src\installer\bin\Debug\net8.0-windows\installer.pdb
+C:\Users\Administrator\Desktop\current projects\cscz_addons\installer_src\installer\obj\Debug\net8.0-windows\installer.Form1.resources
+C:\Users\Administrator\Desktop\current projects\cscz_addons\installer_src\installer\obj\Debug\net8.0-windows\installer.csproj.GenerateResource.cache
+C:\Users\Administrator\Desktop\current projects\cscz_addons\installer_src\installer\obj\Debug\net8.0-windows\installer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Administrator\Desktop\current projects\cscz_addons\installer_src\installer\obj\Debug\net8.0-windows\installer.AssemblyInfoInputs.cache
+C:\Users\Administrator\Desktop\current projects\cscz_addons\installer_src\installer\obj\Debug\net8.0-windows\installer.AssemblyInfo.cs
+C:\Users\Administrator\Desktop\current projects\cscz_addons\installer_src\installer\obj\Debug\net8.0-windows\installer.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\Desktop\current projects\cscz_addons\installer_src\installer\obj\Debug\net8.0-windows\installer.sourcelink.json
+C:\Users\Administrator\Desktop\current projects\cscz_addons\installer_src\installer\obj\Debug\net8.0-windows\installer.dll
+C:\Users\Administrator\Desktop\current projects\cscz_addons\installer_src\installer\obj\Debug\net8.0-windows\refint\installer.dll
+C:\Users\Administrator\Desktop\current projects\cscz_addons\installer_src\installer\obj\Debug\net8.0-windows\installer.pdb
+C:\Users\Administrator\Desktop\current projects\cscz_addons\installer_src\installer\obj\Debug\net8.0-windows\installer.genruntimeconfig.cache
+C:\Users\Administrator\Desktop\current projects\cscz_addons\installer_src\installer\obj\Debug\net8.0-windows\ref\installer.dll
