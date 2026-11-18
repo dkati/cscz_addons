@@ -62,8 +62,23 @@ scripts/cscz-mod.ps1      the installer (mapping table $Mappings at the top)
   - `last_breath` – CT at <=5 HP for >3 s can't die this round; big DHUD message
     "Α Λ Ι Μ Ο Ν Ο...εκδικηση στην αδικια" + sound `misc/alimono.wav` (cvars `amx_lastbreath_hp`,
     `amx_lastbreath_time`)
+  - `security_cams` – dead human players watch the map's fixed cameras (left/right click = next/prev,
+    big DHUD title "1/6 Place" top center, re-sent every 0.1 s with a short hold), until respawn.
+    L (bound to the `cam_toggle` command) switches between the cameras and the game's normal chase
+    cam; the choice is remembered per player. Cameras are made in-game with `amx_cam_add <place>`
+    (also `amx_cam_list`, `amx_cam_del <n>`, `amx_cam_view <n>`), saved to
+    `czero/security_cams/<map>.ini` (outside mod folders so reinstall never deletes them); copy that
+    file into `mod_pack/czero_addon/security_cams/` to keep it. Overrides CZ's spectator mode by
+    resetting `pev_iuser1` and hiding the dead player's buttons from the game. Also shows a yellow
+    DHUD key hint on the right while dead: "L: Cameras" + "Click: Change camera" (cameras) or
+    "Click: Change bot" (chase cam). Nothing on maps without cameras. (The separate sticky_note
+    plugin was removed; P stays bound but isn't shown.)
   - `sequentialkills` – disabled; its `misc/*kill.wav` sounds don't exist
-- HUD channels (only 4 exist): 1–2 headshot_pun, 3 showenemies, 4 wallhack. DHUD (big text) is separate.
+- Extra keys are bound in `mod_pack/czero_addon/userconfig.cfg` (`p` = `amx_pause`, `l` = `cam_toggle`).
+  Plugins can't see keys that aren't game actions; bind them to a plugin command instead.
+- HUD channels (only 4 exist): 1–2 headshot_pun, 3 showenemies, 4 wallhack. All taken, so newer
+  text (last_breath, security_cams title and key hint) uses DHUD (big text, separate 8 slots,
+  re-sent periodically because it can't be updated in place).
 - Left HUD column, top to bottom: showenemies, headshots box, HE box (HE box moves down as the
   headshots box grows). Cvars `amx_hudcol_y` (top), `amx_hudcol_lineh` (line height).
 - Always print prepared text with a format: `show_hudmessage(id, "%s", buf)`. Passing the buffer as
@@ -84,17 +99,34 @@ scripts/cscz-mod.ps1      the installer (mapping table $Mappings at the top)
 
 ## Maps
 
-- Favourites are renamed with a `0_` prefix so they sort to the top of the Create Server list:
-  `0_$2000$`, `0_apartments`, `0_iceworld`, `0_minitaly_fixed`, `0_truth`. When renaming a map,
-  rename all its files (`.bsp .nav .res .txt _detail.txt overviews/*`) and fix names inside `.res`
-  and overview `.txt` files. Game mode comes from map entities, not the name prefix.
-- `a______________.bsp` is a fake divider map (deliberately invalid data, the engine refuses it).
+- Map names must keep their game-mode prefix (`de_`, `cs_`, `fy_`, ...): the client buy menu shows
+  the defuse kit only on `de_` maps (`de_useonly` in `resource/UI/BuyEquipment_CT.res`). A `0_`
+  prefix for sorting was tried and dropped for this reason. Favourites: `fy_$2000$`,
+  `cs_apartments`, `fy_iceworld`, `cs_minitaly_fixed`, `cs_minitaly_dafto`, `de_truth`.
+  When renaming a map, rename all its files (`.bsp .nav .res .txt _detail.txt overviews/*`,
+  `security_cams/*.ini`) and fix names inside `.res` and overview `.txt` files.
 - Every map needs a `.nav` for CZ bots, otherwise bots "learn" the map during play and it lags.
   Generate: load the map without bots and run `bot_add` (not `bot_nav_analyze`, which only works on
   an existing nav), wait until it saves `czero/maps/<map>.nav`, then copy it into the repo.
 - A `.nav` is tied to the exact `.bsp` file size. Edit a `.bsp` only in place with the same size
   (e.g. entity text padded with spaces outside quotes), or regenerate the nav afterwards.
-- `0_$2000$` sky was changed from the missing `catalane` to `dust`.
+- `fy_$2000$` sky was changed from the missing `catalane` to `dust`.
+- `cs_minitaly_dafto` is a remix of minitaly (the user preferred this over a generated map: it keeps
+  minitaly's look). `scripts/mapgen/minitaly_remix.py` decompiles `cs_minitaly_fixed.bsp` (Unified
+  SDK MapDecompiler in the `cs modding` folder) into `scripts/mapgen/build/remix/base.map`, applies
+  the changes in `apply_changes()`, compiles with VHLT (`C:\Program Files\J.A.C.K\halflife`) and
+  copies the `.bsp` into `mod_pack`. Run: `python -I scripts/mapgen/minitaly_remix.py`.
+  - Changes so far: two-floor middle house carved out of the solid block between the west street
+    and the T square (4 hostages, ground floor -4, upper floor 96), wooden bridge from its upper
+    door across the T square to the east walkway (z 96), and a closed house front across the west
+    street at y ≈ -1216. The original single hostage is removed.
+  - Tools in the script: `carve_world(box, wall, floor, ceil)` cuts empty space out of any brushes
+    (convex CSG subtraction), `add(box(...))` adds Valve-220 brushes, `stairs(...)`, `light(...)`.
+  - Decompiler quirks handled in the script: the welcome `game_text` (`http://` read as a comment)
+    and duplicate door origins. Decompiled brush points are ~1e6 away; use `brush_bounds()`.
+  - Every rebuild changes the `.bsp` size, so its `.nav` must be regenerated in-game afterwards.
+- Checking maps without the game: `scripts/mapgen/bsp_probe.py` (floor heights at points / as a
+  grid) and `scripts/mapgen/bsp_topdown.py` (top-down floor image, `ZLO`/`ZCUT` height band).
 
 ## Images
 
