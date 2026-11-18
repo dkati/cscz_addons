@@ -53,6 +53,14 @@ public event_deathmsg() {
     // The 1.0s task loop picks up the new stats (no refresh here, to avoid flashing).
 }
 
+// Headshots as a percentage of kills (rounded). Kills can be 0 or negative (team kills,
+// suicides), and can be lower than headshots, so keep the result between 0 and 100.
+hs_percent(headshots, kills) {
+    if (kills <= 0) return 0
+    new pct = (headshots * 100 + kills / 2) / kills
+    return pct > 100 ? 100 : pct
+}
+
 public refresh_hud() {
     new players[32], num
     get_players(players, num, "e", "CT")
@@ -72,14 +80,14 @@ public refresh_hud() {
         new szMessage[512]
         new len = 0
 
-        len += formatex(szMessage[len], charsmax(szMessage) - len, "== %d τιμπες συνολικά, %d κιλς ==^n", totalHS, totalKills)
+        len += formatex(szMessage[len], charsmax(szMessage) - len, "== %d τιμπες συνολικά, %d κιλς (%d%%) ==^n", totalHS, totalKills, hs_percent(totalHS, totalKills))
 
         for (new j = 0; j < num; j++) {
             new id = players[j]
             new frags = get_user_frags(id)
             if (frags != 0 || g_PlayerHeadshots[id] > 0) {
                 get_user_name(id, name, charsmax(name))
-                len += formatex(szMessage[len], charsmax(szMessage) - len, "%s: %d τίμπες,%d κιλς^n", name, g_PlayerHeadshots[id], frags)
+                len += formatex(szMessage[len], charsmax(szMessage) - len, "%s: %d τίμπες,%d κιλς (%d%%)^n", name, g_PlayerHeadshots[id], frags, hs_percent(g_PlayerHeadshots[id], frags))
             }
         }
 
