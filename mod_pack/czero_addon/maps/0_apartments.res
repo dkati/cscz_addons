@@ -4,7 +4,7 @@ gfx/env/backalleyft.tga
 gfx/env/backalleylf.tga
 gfx/env/backalleyrt.tga
 gfx/env/backalleyup.tga
-maps/cs_apartments_cz.nav
+maps/0_apartments.nav
 models/props/bathroom_toilet.mdl
 models/props/bookcase_arched.mdl
 models/props/car_hatchback.mdl
@@ -14,8 +14,8 @@ models/bush.mdl
 models/pi_shrub.mdl
 models/pi_tree2.mdl
 models/pi_tree3.mdl
-overviews/cs_apartments_cz.bmp
-overviews/cs_apartments_cz.txt
+overviews/0_apartments.bmp
+overviews/0_apartments.txt
 sound/ambience/cat1.wav
 sound/ambience/cricket.wav
 sound/ambience/dog2.wav

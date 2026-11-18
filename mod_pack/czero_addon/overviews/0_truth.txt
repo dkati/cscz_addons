@@ -1,0 +1,14 @@
+// overview description file for 0_truth.bsp
+
+global 
+{
+	ZOOM	1.92
+	ORIGIN	-1036 	-1056	304
+	ROTATED	0
+}
+
+layer 
+{
+	IMAGE	"overviews/0_truth.bmp"
+	HEIGHT	-97
+}
