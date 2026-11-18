@@ -5,12 +5,27 @@
 // frags kept when a player switches team).
 // The plugin only counts what the scoreboard does not track: headshots and HE kills.
 
+// Left HUD column, top to bottom:
+//   1. showenemies    (2 lines, at amx_hudcol_y)
+//   2. headshots box  (2 lines + 1 blank line below it)
+//   3. HE kills box   (right below the headshots box, moves down as that box grows)
+// amx_hudcol_y      = top of the column, 0.0 (top) .. 1.0 (bottom)
+// amx_hudcol_lineh  = height of one text line as a fraction of the screen;
+//                     raise it if the boxes overlap, lower it if the gaps are too big
+// Both cvars are shared with showenemies.sma.
+#define HUD_COL_X 0.005
+
 // Per-player counters (index 1 to 32)
 new g_PlayerHeadshots[33]
 new g_PlayerHEKills[33]
 
+new g_pColY, g_pLineH
+
 public plugin_init() {
-    register_plugin("Dynamic Headshot & HE Stats", "4.0", "Author")
+    register_plugin("Dynamic Headshot & HE Stats", "4.1", "Author")
+
+    g_pColY = register_cvar("amx_hudcol_y", "0.20")
+    g_pLineH = register_cvar("amx_hudcol_lineh", "0.03")
 
     register_event("DeathMsg", "event_deathmsg", "a")
     register_event("TextMsg", "event_game_restart", "a", "2=#Game_Commencing", "2=#Game_will_restart_in")
@@ -75,10 +90,15 @@ public refresh_hud() {
 
     new name[32]
 
+    // Column layout: below the 2-line showenemies box plus one blank line
+    new Float:lineH = get_pcvar_float(g_pLineH)
+    new Float:y = get_pcvar_float(g_pColY) + 3.0 * lineH
+
     // 1. Main dashboard (headshots / kills)
     if (totalKills > 0 || totalHS > 0) {
         new szMessage[512]
         new len = 0
+        new lines = 1
 
         len += formatex(szMessage[len], charsmax(szMessage) - len, "== %d τιμπες συνολικά, %d κιλς (%d%%) ==^n", totalHS, totalKills, hs_percent(totalHS, totalKills))
 
@@ -88,12 +108,16 @@ public refresh_hud() {
             if (frags != 0 || g_PlayerHeadshots[id] > 0) {
                 get_user_name(id, name, charsmax(name))
                 len += formatex(szMessage[len], charsmax(szMessage) - len, "%s: %d τίμπες,%d κιλς (%d%%)^n", name, g_PlayerHeadshots[id], frags, hs_percent(g_PlayerHeadshots[id], frags))
+                lines++
             }
         }
 
         // Channel 1
-        set_hudmessage(0, 255, 0, 0.005, 0.20, 0, 0.0, 1.1, 0.0, 0.0, 1)
+        set_hudmessage(0, 255, 0, HUD_COL_X, y, 0, 0.0, 1.1, 0.0, 0.0, 1)
         show_hudmessage(0, "%s", szMessage)
+
+        // The HE box starts one blank line below this box
+        y += float(lines + 1) * lineH
     }
 
     // 2. HE grenade dashboard
@@ -112,7 +136,7 @@ public refresh_hud() {
         }
 
         // Channel 2
-        set_hudmessage(255, 128, 0, 0.005, 0.50, 0, 0.0, 1.1, 0.0, 0.0, 2)
+        set_hudmessage(255, 128, 0, HUD_COL_X, y, 0, 0.0, 1.1, 0.0, 0.0, 2)
         show_hudmessage(0, "%s", szHEMessage)
     }
 }
