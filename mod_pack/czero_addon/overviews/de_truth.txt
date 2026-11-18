@@ -1,4 +1,4 @@
-// overview description file for 0_truth.bsp
+// overview description file for de_truth.bsp
 
 global 
 {
@@ -9,6 +9,6 @@ global
 
 layer 
 {
-	IMAGE	"overviews/0_truth.bmp"
+	IMAGE	"overviews/de_truth.bmp"
 	HEIGHT	-97
 }
