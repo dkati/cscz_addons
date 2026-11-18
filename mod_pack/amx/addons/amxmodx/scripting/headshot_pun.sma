@@ -93,7 +93,7 @@ public refresh_hud() {
 
         // Channel 1
         set_hudmessage(0, 255, 0, 0.005, 0.20, 0, 0.0, 1.1, 0.0, 0.0, 1)
-        show_hudmessage(0, szMessage)
+        show_hudmessage(0, "%s", szMessage)
     }
 
     // 2. HE grenade dashboard
@@ -113,6 +113,6 @@ public refresh_hud() {
 
         // Channel 2
         set_hudmessage(255, 128, 0, 0.005, 0.50, 0, 0.0, 1.1, 0.0, 0.0, 2)
-        show_hudmessage(0, szHEMessage)
+        show_hudmessage(0, "%s", szHEMessage)
     }
 }

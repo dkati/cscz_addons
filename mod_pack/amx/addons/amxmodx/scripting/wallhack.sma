@@ -32,7 +32,7 @@ public Task_ShowESP() {
     if (ct_count > 0 && ct_count < 5) DrawTracker(CS_TEAM_CT, CS_TEAM_T, players, pnum);
 }
 
-DrawTracker(TargetTeam, ViewingTeam, players[], pnum) {
+DrawTracker(CsTeams:TargetTeam, CsTeams:ViewingTeam, players[], pnum) {
     new hudMsg[256];
     new len;
 
@@ -121,7 +121,7 @@ DrawTracker(TargetTeam, ViewingTeam, players[], pnum) {
                 set_hudmessage(50, 150, 255, -1.0, 0.58, 0, 0.0, 0.6, 0.0, 0.0, -1);
             }
             
-            ShowSyncHudMsg(viewer, g_HudSync, hudMsg);
+            ShowSyncHudMsg(viewer, g_HudSync, "%s", hudMsg);
         }
     }
 }
