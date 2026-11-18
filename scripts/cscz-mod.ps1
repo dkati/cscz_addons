@@ -220,7 +220,13 @@ function Invoke-Install {
     }
 
     $plan = Get-Plan
-    $existing = @($plan | Where-Object { [IO.File]::Exists((Join-Path $GameDir $_.Dest)) })
+    # Files the currently installed mod added will be gone after the uninstall above, so they
+    # count as new (this matters for -DryRun, where the uninstall did not really happen).
+    $modAdded = New-Object 'System.Collections.Generic.HashSet[string]' ([StringComparer]::OrdinalIgnoreCase)
+    foreach ($e in @(Read-ManifestEntries)) { if ($e.Kind -eq 'A') { [void]$modAdded.Add($e.Rel) } }
+    $existing = @($plan | Where-Object {
+        -not $modAdded.Contains($_.Dest) -and [IO.File]::Exists((Join-Path $GameDir $_.Dest))
+    })
     Write-Info ("Installing {0} files: {1} new, {2} replace game files (originals are backed up)." -f `
         $plan.Count, ($plan.Count - $existing.Count), $existing.Count)
 
