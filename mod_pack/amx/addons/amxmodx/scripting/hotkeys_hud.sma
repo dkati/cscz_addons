@@ -5,6 +5,7 @@
 //   Pause Script (P)
 //   Camera Script (I) (click change camera)
 //   Undead Script (K)
+//   Lifesteal Script (amx_lifesteal_pct 3)   (shows the current value; on = above 0)
 //
 // Each script keeps its own on/off state in a cvar; this plugin only reads them.
 // To add a script: add a line to LINES below (cvar name, "" = always on).
@@ -25,17 +26,17 @@
 #define HUD_COL_X 0.005      // same left edge as the stats box
 #define CH_ON   2
 #define CH_OFF  4
-#define LINES   3
+#define LINES   4
 
-new const g_Label[LINES][] = { "Pause Script",  "Camera Script",                 "Undead Script" }
-new const g_Cvar[LINES][]  = { "",              "amx_cams_on",                   "amx_undead_on" }
-new const g_Keys[LINES][]  = { "(P)",           "(I) (click change camera)",         "(K)" }
+new const g_Label[LINES][] = { "Pause Script",  "Camera Script",                 "Undead Script", "Lifesteal Script" }
+new const g_Cvar[LINES][]  = { "",              "amx_cams_on",                   "amx_undead_on", "amx_lifesteal_pct" }
+new const g_Keys[LINES][]  = { "(P)",           "(I) (click change camera)",     "(K)",           "(amx_lifesteal_pct %d)" }
 
 new g_pCvar[LINES]
 new g_pColY
 
 public plugin_init() {
-    register_plugin("Hotkeys HUD", "1.4", "Author")
+    register_plugin("Hotkeys HUD", "1.6", "Author")
     g_pColY = register_cvar("amx_hudcol_y", "0.20")   // shared with stats.sma
     set_task(REFRESH, "refresh", _, _, _, "b")
     register_clcmd("pause_toggle", "cmd_pause")
@@ -76,8 +77,10 @@ public refresh() {
     new on_text[256], off_text[256], lon = 0, loff = 0, n_on = 0, n_off = 0
     for (new i = 0; i < LINES; i++) {
         new bool:on = !g_Cvar[i][0] || (g_pCvar[i] && get_pcvar_num(g_pCvar[i]) != 0)
-        new line[96]
-        formatex(line, charsmax(line), "%s %s", g_Label[i], g_Keys[i])
+        // g_Keys may contain %d: it is replaced by the script's cvar value (e.g. the lifesteal %)
+        new keys[64], line[96]
+        formatex(keys, charsmax(keys), g_Keys[i], g_pCvar[i] ? get_pcvar_num(g_pCvar[i]) : 0)
+        formatex(line, charsmax(line), "%s %s", g_Label[i], keys)
         // the line goes into its color's message; the other message gets an empty line
         lon  += formatex(on_text[lon],   charsmax(on_text) - lon,   "%s^n", on ? line : " ")
         loff += formatex(off_text[loff], charsmax(off_text) - loff, "%s^n", on ? " " : line)

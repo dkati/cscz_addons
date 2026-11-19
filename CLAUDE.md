@@ -84,12 +84,21 @@ scripts/cscz-mod.ps1      the installer (mapping table $Mappings at the top)
     `callfunc`; refreshed every 0.25 s so it follows the box. Each line is green when
     its script is on, red when off (no On/Off words): green lines in channel 2, red lines in channel 4,
     same position, empty lines as placeholders:
-    "Pause Script (P)", "Camera Script (I) (click change camera)", "Undead Script (K)".
+    "Pause Script (P)", "Camera Script (I) (click change camera)", "Undead Script (K)",
+    "Lifesteal Script (amx_lifesteal_pct 3)" (shows the current value; green while > 0). A `%d` in
+    `g_Keys` is replaced by that line's cvar value.
     It only reads the other scripts' on/off cvars; a new script gets a line in its `g_Label/g_Cvar/
     g_Keys` tables.
+  - `lifesteal` – every player (bots too) heals `amx_lifesteal_pct` % (default 3; 0 = off, set it in the console) of the
+    damage they really deal to enemies (victim's actual health loss, so no overkill), capped at max
+    health, fractions carried over. No team/self damage. Humans see a green DHUD "+N" next to the (cvars `amx_lifesteal_x/y`, default 0.51)
+    crosshair (0.5 s, then 0.5 s fade; hits within 0.15 s summed). No hotkey (J was
+    dropped: setting the cvar to 0 already turns it off). Leaves last_breath alone: healing above 5 HP just ends
+    its countdown. Nothing happens at full health. `amx_lifesteal_debug 1` explains every hit in the bottom-left text area and the console
+    (damage, heal, or why there was no heal).
   - `sequentialkills` – disabled; its `misc/*kill.wav` sounds don't exist
 - Extra keys are bound in `mod_pack/czero_addon/userconfig.cfg`: P = `pause_toggle`, I = `cams_toggle`,
-  K = `undead_toggle`, L = `cam_chase`; O is unused (`unbind "o"`, it used to be a "next camera" key,
+  K = `undead_toggle`, J is unbound (was lifesteal_toggle; CZ's "cheer" before that), L = `cam_chase`; O is unused (`unbind "o"`, it used to be a "next camera" key,
   but clicks already do that). Every player can use all of them (no host/admin check). I and K turn
   a script on/off for everyone and show a big DHUD "Camera Script: On/Off (name)" / "Undead Script:
   On/Off (name)" to all. Turning undead off removes active protection. The on/off cvars keep their
@@ -98,8 +107,11 @@ scripts/cscz-mod.ps1      the installer (mapping table $Mappings at the top)
   Plugins can't see keys that aren't game actions; bind them to a plugin command instead.
 - HUD channels (only 4 exist, one color per message): 1 stats, 2 hotkeys_hud green lines,
   3 wallhack, 4 hotkeys_hud red lines. A message can't mix colors, so lines of two colors need two
-  channels. Other text (last_breath, security_cams title and key hint, on/off messages) uses DHUD
+  channels. Other text (last_breath, security_cams title and key hint, lifesteal "+N", on/off messages) uses DHUD
   (big text, fixed size, separate 8 slots, re-sent periodically because it can't be updated in place).
+- CZ bots are a separate player class (CCSBot) with their own virtual functions: `RegisterHam(..., "player")`
+  only hooks humans. To catch events on bots too (e.g. damage TO a bot), also call
+  `RegisterHamFromEntity` on the first bot that joins (see lifesteal `hook_bots`).
 - Always print prepared text with a format: `show_hudmessage(id, "%s", buf)`. Passing the buffer as
   the format eats `%` signs and breaks on names containing `%`.
 
