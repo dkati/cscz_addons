@@ -13,8 +13,8 @@
 //   cameras: "Click: Change camera / L: Free chase camera"    chase cam: "L: Security cameras"
 // It ends when the player respawns.
 //
-// I (cams_toggle) turns the whole script on/off for everyone; only the server owner (the listen
-// server host) can do it. Off = dead players get the game's normal spectator view.
+// I (cams_toggle) turns the whole script on/off for everyone; any player can do it (the message
+// says who). Off = dead players get the game's normal spectator view.
 // State: cvar amx_cams_on (1 = on, the default; kept across map changes).
 // Keys are bound in czero_addon/userconfig.cfg.
 //
@@ -241,11 +241,6 @@ bool:cams_on() {
     return get_pcvar_num(g_pOn) != 0
 }
 
-// The server owner: on a listen server the host is always player 1.
-bool:is_owner(id) {
-    return !is_dedicated_server() && id == 1
-}
-
 public fw_killed_post(victim, attacker, shouldgib) {
     if (g_CamCount == 0 || !cams_on() || is_user_bot(victim) || !is_user_connected(victim)) return HAM_IGNORED
     remove_task(victim + TASK_START)
@@ -337,9 +332,9 @@ public cmd_chase(id) {
     return PLUGIN_HANDLED
 }
 
-// "cams_toggle" (bound to I): the server owner turns the script on/off for everyone.
+// "cams_toggle" (bound to I): any player turns the script on/off for everyone.
 public cmd_toggle(id) {
-    if (!is_owner(id)) return PLUGIN_HANDLED
+    if (id && !is_user_connected(id)) return PLUGIN_HANDLED   // any player (or the server console)
     new bool:on = !cams_on()
     set_pcvar_num(g_pOn, on ? 1 : 0)
 
@@ -354,7 +349,9 @@ public cmd_toggle(id) {
 
     if (on) set_dhudmessage(40, 255, 40, -1.0, 0.20, 0, 0.0, 3.0, 0.2, 0.5)
     else set_dhudmessage(255, 160, 0, -1.0, 0.20, 0, 0.0, 3.0, 0.2, 0.5)
-    show_dhudmessage(0, "Camera Script: %s", on ? "On" : "Off")
+    new who[32]
+    if (id) get_user_name(id, who, charsmax(who)); else copy(who, charsmax(who), "server")
+    show_dhudmessage(0, "Camera Script: %s (%s)", on ? "On" : "Off", who)
     return PLUGIN_HANDLED
 }
 

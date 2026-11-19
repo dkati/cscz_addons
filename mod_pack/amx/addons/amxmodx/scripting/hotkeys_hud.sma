@@ -35,9 +35,23 @@ new g_pCvar[LINES]
 new g_pColY
 
 public plugin_init() {
-    register_plugin("Hotkeys HUD", "1.3", "Author")
+    register_plugin("Hotkeys HUD", "1.4", "Author")
     g_pColY = register_cvar("amx_hudcol_y", "0.20")   // shared with stats.sma
     set_task(REFRESH, "refresh", _, _, _, "b")
+    register_clcmd("pause_toggle", "cmd_pause")
+}
+
+// "pause_toggle" (bound to P): any player can pause / unpause the game. amx_pause needs admin
+// rights and must be run by a real player, so it is run by the host (player 1 on a listen
+// server, who is admin).
+public cmd_pause(id) {
+    if (id && !is_user_connected(id)) return PLUGIN_HANDLED
+    if (is_dedicated_server() || !is_user_connected(1)) return PLUGIN_HANDLED
+    new who[32]
+    if (id) get_user_name(id, who, charsmax(who)); else copy(who, charsmax(who), "server")
+    client_print(0, print_chat, "* %s pressed Pause", who)
+    client_cmd(1, "amx_pause")
+    return PLUGIN_HANDLED
 }
 
 // The other plugins have registered their cvars by now.

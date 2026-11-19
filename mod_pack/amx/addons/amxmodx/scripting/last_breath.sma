@@ -11,9 +11,9 @@
 //
 //   amx_undead_on        1     1 = on (the default; kept across map changes)
 //
-// On/off for everyone: K ("undead_toggle", bound in czero_addon/userconfig.cfg). Only the server
-// owner (the listen server host) can do it. Turning it off also removes the protection from
-// players who already have it.
+// On/off for everyone: K ("undead_toggle", bound in czero_addon/userconfig.cfg). Any player can
+// do it; the message says who. Turning it off also removes the protection from players who
+// already have it.
 
 #define CHECK_INTERVAL 0.1
 
@@ -66,13 +66,8 @@ reset_player(id) {
     g_Protected[id] = false
 }
 
-// The server owner: on a listen server the host is always player 1.
-bool:is_owner(id) {
-    return !is_dedicated_server() && id == 1
-}
-
 public cmd_toggle(id) {
-    if (!is_owner(id)) return PLUGIN_HANDLED
+    if (id && !is_user_connected(id)) return PLUGIN_HANDLED   // any player (or the server console)
 
     new bool:on = get_pcvar_num(g_pOn) == 0
     set_pcvar_num(g_pOn, on ? 1 : 0)
@@ -85,7 +80,9 @@ public cmd_toggle(id) {
 
     if (on) set_dhudmessage(40, 255, 40, -1.0, 0.20, 0, 0.0, 3.0, 0.2, 0.5)
     else set_dhudmessage(255, 160, 0, -1.0, 0.20, 0, 0.0, 3.0, 0.2, 0.5)
-    show_dhudmessage(0, "Undead Script: %s", on ? "On" : "Off")
+    new who[32]
+    if (id) get_user_name(id, who, charsmax(who)); else copy(who, charsmax(who), "server")
+    show_dhudmessage(0, "Undead Script: %s (%s)", on ? "On" : "Off", who)
     return PLUGIN_HANDLED
 }
 

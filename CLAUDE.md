@@ -86,12 +86,13 @@ scripts/cscz-mod.ps1      the installer (mapping table $Mappings at the top)
     It only reads the other scripts' on/off cvars; a new script gets a line in its `g_Label/g_Cvar/
     g_Keys` tables.
   - `sequentialkills` – disabled; its `misc/*kill.wav` sounds don't exist
-- Extra keys are bound in `mod_pack/czero_addon/userconfig.cfg`: P = `amx_pause`, I = `cams_toggle`,
+- Extra keys are bound in `mod_pack/czero_addon/userconfig.cfg`: P = `pause_toggle`, I = `cams_toggle`,
   K = `undead_toggle`, L = `cam_chase`; O is unused (`unbind "o"`, it used to be a "next camera" key,
-  but clicks already do that). I and K turn a script on/off for everyone and
-  work only for the server owner (player 1 on the listen server); each shows a big DHUD
-  "Camera Script: On/Off" / "Undead Script: On/Off" to all. Turning undead off removes active
-  protection. The on/off cvars keep their value across map changes.
+  but clicks already do that). Every player can use all of them (no host/admin check). I and K turn
+  a script on/off for everyone and show a big DHUD "Camera Script: On/Off (name)" / "Undead Script:
+  On/Off (name)" to all. Turning undead off removes active protection. The on/off cvars keep their
+  value across map changes. P (`pause_toggle`, in hotkeys_hud) announces "* name pressed Pause" and
+  makes the host (player 1, the listen-server admin) run `amx_pause`, which needs admin rights.
   Plugins can't see keys that aren't game actions; bind them to a plugin command instead.
 - HUD channels (only 4 exist, one color per message): 1 stats, 2 hotkeys_hud green lines,
   3 wallhack, 4 hotkeys_hud red lines. A message can't mix colors, so lines of two colors need two
