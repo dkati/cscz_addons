@@ -57,7 +57,7 @@ public plugin_precache() {
 }
 
 public plugin_init() {
-    register_plugin("Security Cameras", "1.7", "Author")
+    register_plugin("Security Cameras", "1.8", "Author")
 
     g_pOn = register_cvar("amx_cams_on", "1")
 
@@ -290,7 +290,21 @@ stop_watch(id) {
 
 show_cam(id) {
     attach_view(id, g_CamEnt[g_Watching[id] - 1])
+    clear_status(id)
     show_texts(id)
+}
+
+// The game's status text (the name shown in the middle when you aim at someone, or of the player
+// you follow in chase cam) stays on screen when the cameras take over. Send an empty one.
+// The game only re-sends it when the name changes, so it stays cleared.
+clear_status(id) {
+    static msg
+    if (!msg) msg = get_user_msgid("StatusText")
+    if (!msg || !is_user_connected(id)) return
+    message_begin(MSG_ONE, msg, _, id)
+    write_byte(0)
+    write_string("")
+    message_end()
 }
 
 // Camera name in big "director" text at the top (cameras only), and a yellow key hint on the
@@ -415,6 +429,7 @@ public fw_prethink(id) {
         set_pev(id, pev_iuser1, 0)
         set_pev(id, pev_iuser2, 0)
         attach_view(id, g_CamEnt[g_Watching[id] - 1])
+        clear_status(id)
     }
     return FMRES_IGNORED
 }
