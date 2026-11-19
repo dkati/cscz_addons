@@ -55,32 +55,48 @@ scripts/cscz-mod.ps1      the installer (mapping table $Mappings at the top)
   `../plugins/`. Keep `plugins/` and `scripting/compiled/` identical. Enable in `configs/plugins.ini`.
 - Custom plugins:
   - `kill_puns` – random Greek taunt to a human killer (center text)
-  - `headshot_pun` – CT headshots/kills with % and HE kills; kills come from `get_user_frags()` so
-    they match the scoreboard; team kills don't count as headshot/HE
-  - `showenemies` – own team's round wins + enemies alive
-  - `wallhack` – distance/direction to the last <5 enemies (center)
+  - `stats` – one green box top-left (channel 1), sent per human player: own team's round wins +
+    enemies alive, then CT headshots/kills with %, then CT HE kills. Kills come from
+    `get_user_frags()` so they match the scoreboard; team kills don't count as headshot/HE. Cvar
+    `amx_hudcol_y` = top of the box (the key list follows below it). (Replaces the old
+    `showenemies` + `headshot_pun`.)
+  - `wallhack` – distance/direction to the last <5 enemies (center, channel 3, updated every 0.1 s)
   - `last_breath` – CT at <=5 HP for >3 s can't die this round; big DHUD message
     "Α Λ Ι Μ Ο Ν Ο...εκδικηση στην αδικια" + sound `misc/alimono.wav` (cvars `amx_lastbreath_hp`,
-    `amx_lastbreath_time`)
-  - `security_cams` – dead human players watch the map's fixed cameras (left/right click = next/prev,
-    big DHUD title "1/6 Place" top center, re-sent every 0.1 s with a short hold), until respawn.
-    L (bound to the `cam_toggle` command) switches between the cameras and the game's normal chase
-    cam; the choice is remembered per player. Cameras are made in-game with `amx_cam_add <place>`
+    `amx_lastbreath_time`). On/off: cvar `amx_undead_on` (default 1).
+  - `security_cams` – dead human players watch the map's fixed cameras (left/right click = next/prev
+    camera; big DHUD title "1/6 Place" top center, re-sent every 0.1 s with a short hold),
+    until respawn. On/off: cvar `amx_cams_on` (default 1); off = the game's normal spectator view.
+    Cameras are made in-game with `amx_cam_add <place>`
     (also `amx_cam_list`, `amx_cam_del <n>`, `amx_cam_view <n>`), saved to
     `czero/security_cams/<map>.ini` (outside mod folders so reinstall never deletes them); copy that
     file into `mod_pack/czero_addon/security_cams/` to keep it. Overrides CZ's spectator mode by
-    resetting `pev_iuser1` and hiding the dead player's buttons from the game. Also shows a yellow
-    DHUD key hint on the right while dead: "L: Cameras" + "Click: Change camera" (cameras) or
-    "Click: Change bot" (chase cam). Nothing on maps without cameras. (The separate sticky_note
-    plugin was removed; P stays bound but isn't shown.)
+    resetting `pev_iuser1` and hiding the dead player's buttons from the game. L (`cam_chase`)
+    switches a dead player between the cameras and the game's free chase cam (OBS_CHASE_FREE) and
+    back; the choice is remembered per player until reconnect. Yellow DHUD hint on the right:
+    "Click: Change camera / L: Free chase camera" (cameras) or "L: Security cameras" (chase cam).
+    Nothing on maps without cameras.
+  - `hotkeys_hud` – sticky key list on the left, right below the stats box, for alive humans, small
+    normal HUD text. It uses the stats box's position (`amx_hudcol_y`) and starts with as many empty
+    lines as that player's stats box has (+1 gap), read from stats' public `stats_lines(id)` via
+    `callfunc`; refreshed every 0.25 s so it follows the box. Each line is green when
+    its script is on, red when off (no On/Off words): green lines in channel 2, red lines in channel 4,
+    same position, empty lines as placeholders:
+    "Pause Script (P)", "Camera Script (I) (click change camera)", "Undead Script (K)".
+    It only reads the other scripts' on/off cvars; a new script gets a line in its `g_Label/g_Cvar/
+    g_Keys` tables.
   - `sequentialkills` – disabled; its `misc/*kill.wav` sounds don't exist
-- Extra keys are bound in `mod_pack/czero_addon/userconfig.cfg` (`p` = `amx_pause`, `l` = `cam_toggle`).
+- Extra keys are bound in `mod_pack/czero_addon/userconfig.cfg`: P = `amx_pause`, I = `cams_toggle`,
+  K = `undead_toggle`, L = `cam_chase`; O is unused (`unbind "o"`, it used to be a "next camera" key,
+  but clicks already do that). I and K turn a script on/off for everyone and
+  work only for the server owner (player 1 on the listen server); each shows a big DHUD
+  "Camera Script: On/Off" / "Undead Script: On/Off" to all. Turning undead off removes active
+  protection. The on/off cvars keep their value across map changes.
   Plugins can't see keys that aren't game actions; bind them to a plugin command instead.
-- HUD channels (only 4 exist): 1–2 headshot_pun, 3 showenemies, 4 wallhack. All taken, so newer
-  text (last_breath, security_cams title and key hint) uses DHUD (big text, separate 8 slots,
-  re-sent periodically because it can't be updated in place).
-- Left HUD column, top to bottom: showenemies, headshots box, HE box (HE box moves down as the
-  headshots box grows). Cvars `amx_hudcol_y` (top), `amx_hudcol_lineh` (line height).
+- HUD channels (only 4 exist, one color per message): 1 stats, 2 hotkeys_hud green lines,
+  3 wallhack, 4 hotkeys_hud red lines. A message can't mix colors, so lines of two colors need two
+  channels. Other text (last_breath, security_cams title and key hint, on/off messages) uses DHUD
+  (big text, fixed size, separate 8 slots, re-sent periodically because it can't be updated in place).
 - Always print prepared text with a format: `show_hudmessage(id, "%s", buf)`. Passing the buffer as
   the format eats `%` signs and breaks on names containing `%`.
 

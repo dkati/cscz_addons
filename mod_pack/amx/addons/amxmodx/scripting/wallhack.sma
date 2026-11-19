@@ -2,14 +2,14 @@
 #include <cstrike>
 #include <fakemeta>
 
-// HUD channel 4 is reserved for this plugin (1,2 = headshot_pun, 3 = showenemies)
+// Normal HUD text in channel 3 (1 = stats, 2 + 4 = hotkeys_hud). Updated every 0.1 s.
 
 public plugin_init() {
-    register_plugin("Last 5 Text Tracker (Greek)", "1.2", "YourName");
+    register_plugin("Last 5 Text Tracker (Greek)", "1.4", "YourName");
     
     
-    // Update the distances every 0.5 seconds
-    set_task(0.5, "Task_ShowESP", .flags="b"); 
+    // Update the distances every 0.1 seconds
+    set_task(0.1, "Task_ShowESP", .flags="b"); 
 }
 
 public Task_ShowESP() {
@@ -113,9 +113,9 @@ DrawTracker(CsTeams:TargetTeam, CsTeams:ViewingTeam, players[], pnum) {
         // Show the smooth HUD message
         if (len > 0) {
             if (TargetTeam == CS_TEAM_T) {
-                set_hudmessage(255, 50, 50, -1.0, 0.58, 0, 0.0, 0.6, 0.0, 0.0, 4);
+                set_hudmessage(255, 50, 50, -1.0, 0.58, 0, 0.0, 0.3, 0.0, 0.0, 3);
             } else {
-                set_hudmessage(50, 150, 255, -1.0, 0.58, 0, 0.0, 0.6, 0.0, 0.0, 4);
+                set_hudmessage(50, 150, 255, -1.0, 0.58, 0, 0.0, 0.3, 0.0, 0.0, 3);
             }
             
             show_hudmessage(viewer, "%s", hudMsg);

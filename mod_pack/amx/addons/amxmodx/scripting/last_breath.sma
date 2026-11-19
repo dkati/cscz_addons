@@ -8,6 +8,12 @@
 // Console settings (can be changed live):
 //   amx_lastbreath_hp    5     health at or below which the timer starts
 //   amx_lastbreath_time  3.0   seconds the player has to stay at that health
+//
+//   amx_undead_on        1     1 = on (the default; kept across map changes)
+//
+// On/off for everyone: K ("undead_toggle", bound in czero_addon/userconfig.cfg). Only the server
+// owner (the listen server host) can do it. Turning it off also removes the protection from
+// players who already have it.
 
 #define CHECK_INTERVAL 0.1
 
@@ -19,15 +25,19 @@ new Float:g_LowSince[33]   // game time when the player dropped to low health, 0
 new bool:g_Protected[33]
 
 new g_pHp, g_pTime
+new g_pOn
 
 public plugin_init() {
-    register_plugin("Last Breath (CT)", "1.1", "Author")
+    register_plugin("Last Breath (CT)", "1.3", "Author")
 
     g_pHp = register_cvar("amx_lastbreath_hp", "5")
     g_pTime = register_cvar("amx_lastbreath_time", "3.0")
+    g_pOn = register_cvar("amx_undead_on", "1")
 
     // New round (freeze time start)
     register_event("HLTV", "event_new_round", "a", "1=0", "2=0")
+
+    register_clcmd("undead_toggle", "cmd_toggle")
 
     set_task(CHECK_INTERVAL, "check_players", _, _, _, "b")
 }
@@ -56,7 +66,31 @@ reset_player(id) {
     g_Protected[id] = false
 }
 
+// The server owner: on a listen server the host is always player 1.
+bool:is_owner(id) {
+    return !is_dedicated_server() && id == 1
+}
+
+public cmd_toggle(id) {
+    if (!is_owner(id)) return PLUGIN_HANDLED
+
+    new bool:on = get_pcvar_num(g_pOn) == 0
+    set_pcvar_num(g_pOn, on ? 1 : 0)
+    if (!on) {
+        for (new i = 1; i <= 32; i++) {
+            if (g_Protected[i] && is_user_connected(i)) set_user_godmode(i, 0)
+            reset_player(i)
+        }
+    }
+
+    if (on) set_dhudmessage(40, 255, 40, -1.0, 0.20, 0, 0.0, 3.0, 0.2, 0.5)
+    else set_dhudmessage(255, 160, 0, -1.0, 0.20, 0, 0.0, 3.0, 0.2, 0.5)
+    show_dhudmessage(0, "Undead Script: %s", on ? "On" : "Off")
+    return PLUGIN_HANDLED
+}
+
 public check_players() {
+    if (get_pcvar_num(g_pOn) == 0) return
     new players[32], num
     get_players(players, num, "ae", "CT")   // alive CTs only
 

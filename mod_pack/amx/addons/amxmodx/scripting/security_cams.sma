@@ -6,11 +6,17 @@
 
 // Security cameras for dead players.
 // When a human player dies, their view switches to the map's fixed cameras:
-//   left click  = next camera, right click = previous camera
-//   L           = switch between the cameras and the normal chase cam (remembered per player)
-//                 (L is bound to the "cam_toggle" command in czero_addon/userconfig.cfg)
-// The screen shows "1/6 Place" in big text, and a key hint on the right side
-// ("L: Cameras" + "Click: Change camera" / "Click: Change bot"). It ends when the player respawns.
+//   left click    = next camera, right click = previous camera
+//   L (cam_chase) = switch between the cameras and the game's normal free chase camera, and back
+//                   (each player's choice is remembered for their next death, until they reconnect)
+// The screen shows "1/6 Place" in big text and a key hint on the right side:
+//   cameras: "Click: Change camera / L: Free chase camera"    chase cam: "L: Security cameras"
+// It ends when the player respawns.
+//
+// I (cams_toggle) turns the whole script on/off for everyone; only the server owner (the listen
+// server host) can do it. Off = dead players get the game's normal spectator view.
+// State: cvar amx_cams_on (1 = on, the default; kept across map changes).
+// Keys are bound in czero_addon/userconfig.cfg.
 //
 // Cameras are saved per map in  czero/security_cams/<map>.ini  (outside the mod's folders,
 // so reinstalling the mod never deletes them). Copy that file into the repo to keep it:
@@ -40,17 +46,20 @@ new g_CamEnt[MAX_CAMS]
 
 new g_Watching[33]      // 1-based camera index the player is watching, 0 = not watching
 new g_LastButtons[33]
-new bool:g_Chase[33]       // currently in the normal chase cam instead of the cameras
-new bool:g_PrefChase[33]   // remembered choice for the next death
 new bool:g_SawObserver[33] // the game's spectator mode has started this life
+new bool:g_Chase[33]       // in the game's free chase cam instead of the cameras (L)
+new bool:g_PrefChase[33]   // remembered L choice for the next death
 new g_File[128]
+new g_pOn
 
 public plugin_precache() {
     precache_model(CAM_MODEL)
 }
 
 public plugin_init() {
-    register_plugin("Security Cameras", "1.4", "Author")
+    register_plugin("Security Cameras", "1.7", "Author")
+
+    g_pOn = register_cvar("amx_cams_on", "1")
 
     register_concmd("amx_cam_add", "cmd_add", ADMIN_CFG, "<place name> - save a camera here")
     register_concmd("amx_cam_list", "cmd_list", ADMIN_CFG, "- list this map's cameras")
@@ -60,7 +69,8 @@ public plugin_init() {
     RegisterHam(Ham_Killed, "player", "fw_killed_post", 1)
     RegisterHam(Ham_Spawn, "player", "fw_spawn_post", 1)
     register_forward(FM_PlayerPreThink, "fw_prethink")
-    register_clcmd("cam_toggle", "cmd_toggle")
+    register_clcmd("cams_toggle", "cmd_toggle")
+    register_clcmd("cam_chase", "cmd_chase")
 
     new map[64]
     get_mapname(map, charsmax(map))
@@ -226,13 +236,18 @@ public cmd_view(id, level, cid) {
 }
 
 // ---------------------------------------------------------------- watching
-//
-// A dead human player is in one of two modes (L / cam_toggle switches, the choice is remembered):
-//   cameras - the map's security cameras, clicks switch cameras
-//   chase   - the game's normal spectator view (chase cam on bots/players), game controls
+
+bool:cams_on() {
+    return get_pcvar_num(g_pOn) != 0
+}
+
+// The server owner: on a listen server the host is always player 1.
+bool:is_owner(id) {
+    return !is_dedicated_server() && id == 1
+}
 
 public fw_killed_post(victim, attacker, shouldgib) {
-    if (g_CamCount == 0 || is_user_bot(victim) || !is_user_connected(victim)) return HAM_IGNORED
+    if (g_CamCount == 0 || !cams_on() || is_user_bot(victim) || !is_user_connected(victim)) return HAM_IGNORED
     remove_task(victim + TASK_START)
     set_task(START_DELAY, "start_watch", victim + TASK_START)
     return HAM_IGNORED
@@ -240,13 +255,21 @@ public fw_killed_post(victim, attacker, shouldgib) {
 
 public start_watch(taskid) {
     new id = taskid - TASK_START
-    if (!is_user_connected(id) || is_user_alive(id) || g_CamCount == 0) return
+    if (!is_user_connected(id) || is_user_alive(id) || g_CamCount == 0 || !cams_on()) return
     g_Watching[id] = 1
-    g_Chase[id] = g_PrefChase[id]
-    g_SawObserver[id] = false
+    g_SawObserver[id] = pev(id, pev_iuser1) != 0
     g_LastButtons[id] = pev(id, pev_button)   // a click held from dying doesn't count
-    if (!g_Chase[id]) show_cam(id)
-    show_texts(id)
+    g_Chase[id] = g_PrefChase[id]
+    if (g_Chase[id]) {                        // last time this player chose the chase cam
+        show_texts(id)
+        return
+    }
+    // Turned on while the game's spectator mode was already running: switch it off.
+    if (g_SawObserver[id]) {
+        set_pev(id, pev_iuser1, 0)
+        set_pev(id, pev_iuser2, 0)
+    }
+    show_cam(id)
 }
 
 public fw_spawn_post(id) {
@@ -257,6 +280,7 @@ public fw_spawn_post(id) {
 public client_disconnected(id) {
     remove_task(id + TASK_START)
     g_Watching[id] = 0
+    g_Chase[id] = false
     g_PrefChase[id] = false
 }
 
@@ -266,6 +290,7 @@ stop_watch(id) {
         g_Watching[id] = 0
         if (is_user_connected(id) && !g_Chase[id]) attach_view(id, id)
     }
+    g_Chase[id] = false
 }
 
 show_cam(id) {
@@ -273,8 +298,8 @@ show_cam(id) {
     show_texts(id)
 }
 
-// Camera name in big "director" text at the top (cameras only), and a yellow key hint on
-// the right side (both modes).
+// Camera name in big "director" text at the top (cameras only), and a yellow key hint on the
+// right side (cameras and chase cam).
 show_texts(id) {
     if (!g_Chase[id]) {
         new i = g_Watching[id] - 1
@@ -282,16 +307,66 @@ show_texts(id) {
         show_dhudmessage(id, "%d/%d %s", i + 1, g_CamCount, g_CamName[i])
     }
     set_dhudmessage(255, 220, 80, HINT_X, HINT_Y, 0, 0.0, TITLE_HOLD, 0.0, 0.0)
-    show_dhudmessage(id, "%s", g_Chase[id] ? "L: Cameras^nClick: Change bot" : "L: Cameras^nClick: Change camera")
+    show_dhudmessage(id, "%s", g_Chase[id] ? "L: Security cameras" : "Click: Change camera^nL: Free chase camera")
 }
 
-// "cam_toggle" (bound to L): switch between the cameras and the chase cam while dead.
-public cmd_toggle(id) {
-    if (g_Watching[id] && !is_user_alive(id)) {
-        if (g_Chase[id]) switch_to_cams(id)
-        else switch_to_chase(id)
+// "cam_chase" (bound to L): switch between the cameras and the game's free chase cam.
+public cmd_chase(id) {
+    if (!g_Watching[id] || is_user_alive(id)) return PLUGIN_HANDLED
+    if (g_Chase[id]) {
+        // back to the cameras: switch the game's spectator mode off again
+        g_Chase[id] = false
+        if (pev(id, pev_iuser1) != 0) {
+            g_SawObserver[id] = true
+            set_pev(id, pev_iuser1, 0)
+            set_pev(id, pev_iuser2, 0)
+        }
+        show_cam(id)
+    } else {
+        // to the chase cam: give the view back to the game; if its spectator mode had already
+        // started, turn it back on in free chase mode (otherwise the game starts it by itself)
+        g_Chase[id] = true
+        attach_view(id, id)
+        if (g_SawObserver[id]) {
+            set_pev(id, pev_iuser1, OBS_CHASE_FREE)
+            set_pev(id, pev_iuser2, find_chase_target(id))
+        }
+        show_texts(id)
     }
+    g_PrefChase[id] = g_Chase[id]
     return PLUGIN_HANDLED
+}
+
+// "cams_toggle" (bound to I): the server owner turns the script on/off for everyone.
+public cmd_toggle(id) {
+    if (!is_owner(id)) return PLUGIN_HANDLED
+    new bool:on = !cams_on()
+    set_pcvar_num(g_pOn, on ? 1 : 0)
+
+    for (new p = 1; p <= 32; p++) {
+        if (!is_user_connected(p) || is_user_bot(p) || is_user_alive(p)) continue
+        if (on) {
+            if (g_CamCount > 0 && !g_Watching[p]) start_watch(p + TASK_START)
+        } else if (g_Watching[p]) {
+            to_spectator(p)
+        }
+    }
+
+    if (on) set_dhudmessage(40, 255, 40, -1.0, 0.20, 0, 0.0, 3.0, 0.2, 0.5)
+    else set_dhudmessage(255, 160, 0, -1.0, 0.20, 0, 0.0, 3.0, 0.2, 0.5)
+    show_dhudmessage(0, "Camera Script: %s", on ? "On" : "Off")
+    return PLUGIN_HANDLED
+}
+
+// Stop the cameras and give the player back the game's spectator view (chase cam on a living
+// player, teammates first), if the game had already started it.
+to_spectator(id) {
+    new bool:chasing = g_Chase[id]
+    stop_watch(id)
+    if (g_SawObserver[id] && !chasing) {
+        set_pev(id, pev_iuser1, OBS_CHASE_FREE)
+        set_pev(id, pev_iuser2, find_chase_target(id))
+    }
 }
 
 // Big text cannot be replaced in place, only re-sent, so it is re-sent often with a short
@@ -300,30 +375,6 @@ public refresh_hud() {
     for (new id = 1; id <= 32; id++) {
         if (g_Watching[id] && is_user_connected(id)) show_texts(id)
     }
-}
-
-switch_to_chase(id) {
-    g_Chase[id] = true
-    g_PrefChase[id] = true
-    attach_view(id, id)
-    // If the game's spectator mode had already started (we switched it off), turn it back on
-    // in chase mode, following a living player (teammates first).
-    if (g_SawObserver[id]) {
-        set_pev(id, pev_iuser1, OBS_CHASE_FREE)
-        set_pev(id, pev_iuser2, find_chase_target(id))
-    }
-    show_texts(id)
-}
-
-switch_to_cams(id) {
-    g_Chase[id] = false
-    g_PrefChase[id] = false
-    if (pev(id, pev_iuser1) != 0) {
-        g_SawObserver[id] = true
-        set_pev(id, pev_iuser1, 0)
-        set_pev(id, pev_iuser2, 0)
-    }
-    show_cam(id)
 }
 
 find_chase_target(id) {
@@ -342,13 +393,13 @@ public fw_prethink(id) {
     new pressed = buttons & ~g_LastButtons[id]
     g_LastButtons[id] = buttons
 
+    // Free chase cam (L): leave everything to the game's spectator mode.
     if (g_Chase[id]) {
-        // Normal spectator: leave everything to the game.
         if (pev(id, pev_iuser1) != 0) g_SawObserver[id] = true
         return FMRES_IGNORED
     }
 
-    // Cameras: clicks switch cameras.
+    // Clicks switch cameras too.
     if (pressed & IN_ATTACK) {
         g_Watching[id] = (g_Watching[id] % g_CamCount) + 1
         show_cam(id)
