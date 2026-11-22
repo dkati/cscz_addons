@@ -120,6 +120,7 @@ scripts/cscz-mod.ps1      the installer (mapping table $Mappings at the top)
 - WAV, PCM 16-bit, mono, 22050 Hz, short; lowercase ASCII file names.
 - A plugin must `precache_sound()` it in `plugin_precache` and play it with `client_cmd(0, "spk ...")`.
 - Hostage voices: `czero/sound/hostage/<situation>/`. The mod replaces all of them with `nenene.wav`
+  (made +6 dB louder with a soft limiter: average -13 -> -7.6 dBFS, peaks just under full scale)
   except `hpain`, `hgrenade`, `hflash`, `hsmoke` (those stay original).
 - "Fire in the hole" = `sound/radio/ct_fireinhole.wav` (used by both teams).
 
