@@ -1,10 +1,11 @@
 # Changelog
 
-Newest version first. The installer shows the new entries after every install.
+Newest version first. After every install the installer shows all versions of the current big
+release (e.g. everything since 5.0.0) and marks the ones that are new for you.
 Format: a `## <version>` line, then one `- ` bullet per change.
 
 ## 5.1.2
-- Changelog: every install now shows what's new since the version you had
+- Changelog: every install shows all changes since 5.0.0, the new ones marked (new)
 
 ## 5.1.1
 - Updates from GitHub: double-click update.bat to get the newest version

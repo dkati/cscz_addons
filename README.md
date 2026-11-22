@@ -9,7 +9,8 @@ nothing is downloaded. It also does the very first install on a PC without the m
 (`update.bat -Force` reinstalls anyway. To see the installed version, run
 `powershell -ExecutionPolicy Bypass -File scripts\cscz-mod.ps1 -Action Status`.)
 
-Every install shows what's new since the version you had, from `CHANGELOG.md`. When releasing a
+Every install shows all changes of the current big release from `CHANGELOG.md` (now everything
+since 5.0.0), with the versions that are new for you marked `(new)`. When releasing a
 version, add a `## <version>` section at the top of `CHANGELOG.md` with one `- ` bullet per change.
 Players get a change only after it is committed and pushed to `main`.
 

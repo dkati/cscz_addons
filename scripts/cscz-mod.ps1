@@ -249,22 +249,27 @@ function Read-InstalledVersion {
     return ''
 }
 
-# After an install: show what's new since the previously installed version (or, on a first install
-# or a reinstall of the same version, the current version's notes) and remember the new version.
+# After an install: show every version of the current big release (same major number, e.g. all
+# 5.x.x), plus anything newer than the previously installed version if that was an older release.
+# Versions newer than the previous install are marked "(new)". Then remember the new version.
 function Show-Changelog([string]$previous) {
     $log = @(Read-Changelog)
     if ($log.Count -eq 0) { return }
     $newest = $log[0].Version
-    $show = @()
-    if ($previous) {
-        try { $show = @($log | Where-Object { [version]$_.Version -gt [version]$previous }) } catch { $show = @() }
-    }
-    if ($show.Count -eq 0) { $show = @($log[0]) }
+    $major = ([version]$newest).Major
+    $prev = $null
+    if ($previous) { try { $prev = [version]$previous } catch { $prev = $null } }
+
+    $show = @($log | Where-Object {
+        $v = [version]$_.Version
+        $v.Major -eq $major -or ($prev -and $v -gt $prev)
+    })
     Write-Info ''
-    if ($previous -and $previous -ne $newest) { Write-Good "What's new (you had $previous, now $newest):" }
-    else { Write-Good "Version ${newest}:" }
+    if ($prev -and $previous -ne $newest) { Write-Good "Changes in version $major (you had $previous, now $newest):" }
+    else { Write-Good "Changes in version $major (now $newest):" }
     foreach ($entry in $show) {
-        Write-Host ("  v" + $entry.Version) -ForegroundColor Yellow
+        $isNew = $prev -and ([version]$entry.Version -gt $prev)
+        Write-Host ("  v" + $entry.Version + $(if ($isNew) { '  (new)' } else { '' })) -ForegroundColor Yellow
         foreach ($l in $entry.Lines) { Write-Info ("    " + $l) }
     }
     [IO.File]::WriteAllText((Get-VersionFile), $newest)

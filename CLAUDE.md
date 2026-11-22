@@ -45,9 +45,9 @@ scripts/update.ps1        the GitHub updater (OTA)
 ## Changelog
 
 - `CHANGELOG.md` (repo root): newest version first, `## <version>` then `- ` bullets, short and in
-  plain words. After every install the installer prints the entries newer than the previously
-  installed version (or the current version's entry on a first install / same-version reinstall)
-  and saves the version in `Half-Life\_cscz_mod_backup\version.txt` (shown by `-Action Status`).
+  plain words. After every install the installer prints every version of the current major
+  release (all 5.x.x now), plus versions newer than the previously installed one if that was an
+  older major; versions newer than the previous install are marked "(new)". It saves the version in `Half-Life\_cscz_mod_backup\version.txt` (shown by `-Action Status`).
 - With every release (the user's "uprev to v.X.Y.Z" commits): add the version's section at the top
   of CHANGELOG.md and update the version text in the menu background tile `800_1_d`.
 
