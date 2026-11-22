@@ -159,6 +159,18 @@ scripts/cscz-mod.ps1      the installer (mapping table $Mappings at the top)
 - Checking maps without the game: `scripts/mapgen/bsp_probe.py` (floor heights at points / as a
   grid) and `scripts/mapgen/bsp_topdown.py` (top-down floor image, `ZLO`/`ZCUT` height band).
 
+## Spray logo
+
+- The mod's spray ("Defend JulMaYa") is `mod_pack/COPY TO ROOT CZERO/tempdecal.wad` (64×64). The game
+  only accepts it like the files it makes itself: one lump named `LOGO` with type `0x40` (decal). A
+  `{NEW` / `0x43` (texture) lump looks right in texture tools but the game ignores it and sprays the
+  default logo. (`czero_addon/tempdecal.wad` is the same file, overridden by the root copy.)
+- `tempdecal.wad` is read-only on purpose so Options → Multiplayer → OK (which rebuilds the spray from
+  `cl_logofile`, "lambda" by default) can't overwrite it. The installer keeps the read-only flag;
+  git does not store it, so set it again (`attrib +R`) after a fresh clone.
+- `custom.hpk` is the game's spray cache; keep it writable so the game can add the logo's entry.
+- `logos/remapped.bmp` holds the same picture as a normal logo file.
+
 ## Images
 
 - Menu background: `czero_addon/resource/background/800_<row>_<col>_loading.tga`, a 4×3 grid of
