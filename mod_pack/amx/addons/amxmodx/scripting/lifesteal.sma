@@ -14,7 +14,7 @@
 // 20 HP enemy) heals for 20, not 400. No healing from team damage or from hurting yourself.
 // Health never goes above the player's maximum (100). Fractions are kept, so small hits add up.
 //
-// The undead script (last_breath) is not touched: healing above 5 HP simply ends its countdown.
+// The undead script (last_breath) is not touched: healing above 10 HP simply ends its countdown.
 //
 // Humans see the heal as a green "+3" next to the crosshair for about a second, fading out.
 // (Big DHUD text: the 4 normal HUD channels are taken. Hits close together are shown as one sum.)

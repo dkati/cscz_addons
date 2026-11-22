@@ -6,7 +6,7 @@
 // The protection is removed at the start of every new round.
 //
 // Console settings (can be changed live):
-//   amx_lastbreath_hp    5     health at or below which the timer starts
+//   amx_lastbreath_hp    10    health at or below which the timer starts
 //   amx_lastbreath_time  3.0   seconds the player has to stay at that health
 //
 //   amx_undead_on        1     1 = on (the default; kept across map changes)
@@ -30,7 +30,7 @@ new g_pOn
 public plugin_init() {
     register_plugin("Last Breath (CT)", "1.3", "Author")
 
-    g_pHp = register_cvar("amx_lastbreath_hp", "5")
+    g_pHp = register_cvar("amx_lastbreath_hp", "10")
     g_pTime = register_cvar("amx_lastbreath_time", "3.0")
     g_pOn = register_cvar("amx_undead_on", "1")
 
