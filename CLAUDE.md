@@ -75,7 +75,10 @@ scripts/cscz-mod.ps1      the installer (mapping table $Mappings at the top)
     file into `mod_pack/czero_addon/security_cams/` to keep it. Overrides CZ's spectator mode by
     resetting `pev_iuser1` and hiding the dead player's buttons from the game. Whenever the cameras
     take the view, it sends an empty `StatusText` so the followed player's name from chase cam
-    doesn't stay stuck in the middle of the screen. L (`cam_chase`)
+    doesn't stay stuck in the middle of the screen. Clicks are read two ways: as buttons in
+    PlayerPreThink, and as the spectator commands the client sends instead whenever it thinks it is
+    spectating (`follownext 0/1` = left/right click, `specmode` = jump; both blocked while on the
+    cameras). A second switch within 0.15 s is ignored so one click never skips two cameras. L (`cam_chase`)
     switches a dead player between the cameras and the game's free chase cam (OBS_CHASE_FREE) and
     back; the choice is remembered per player until reconnect. Yellow DHUD hint on the right:
     "Click: Change camera / L: Free chase camera" (cameras) or "L: Security cameras" (chase cam).

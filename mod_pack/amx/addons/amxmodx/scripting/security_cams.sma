@@ -49,6 +49,7 @@ new g_LastButtons[33]
 new bool:g_SawObserver[33] // the game's spectator mode has started this life
 new bool:g_Chase[33]       // in the game's free chase cam instead of the cameras (L)
 new bool:g_PrefChase[33]   // remembered L choice for the next death
+new Float:g_LastSwitch[33] // time of the last camera switch (one click must not switch twice)
 new g_File[128]
 new g_pOn
 
@@ -57,7 +58,7 @@ public plugin_precache() {
 }
 
 public plugin_init() {
-    register_plugin("Security Cameras", "1.8", "Author")
+    register_plugin("Security Cameras", "1.9", "Author")
 
     g_pOn = register_cvar("amx_cams_on", "1")
 
@@ -71,6 +72,10 @@ public plugin_init() {
     register_forward(FM_PlayerPreThink, "fw_prethink")
     register_clcmd("cams_toggle", "cmd_toggle")
     register_clcmd("cam_chase", "cmd_chase")
+    // When the client thinks it is spectating, it sends clicks as commands instead of buttons:
+    // "follownext 0" (left click) / "follownext 1" (right click), and "specmode" (jump).
+    register_clcmd("follownext", "cmd_follownext")
+    register_clcmd("specmode", "cmd_specmode")
 
     new map[64]
     get_mapname(map, charsmax(map))
@@ -395,6 +400,35 @@ find_chase_target(id) {
     return num > 0 ? players[0] : 0
 }
 
+// Next / previous camera. A click can arrive both as a button and as a spectator command, so a
+// second switch within 0.15 s is ignored.
+switch_cam(id, bool:previous) {
+    new Float:now = get_gametime()
+    if (now - g_LastSwitch[id] < 0.15) return
+    g_LastSwitch[id] = now
+    if (previous) g_Watching[id] = g_Watching[id] > 1 ? g_Watching[id] - 1 : g_CamCount
+    else g_Watching[id] = (g_Watching[id] % g_CamCount) + 1
+    show_cam(id)
+}
+
+bool:on_cameras(id) {
+    return g_Watching[id] && !g_Chase[id] && is_user_connected(id) && !is_user_alive(id)
+}
+
+// Click while the client thinks it is spectating: switch the camera, and keep the game's own
+// spectator mode from reacting.
+public cmd_follownext(id) {
+    if (!on_cameras(id)) return PLUGIN_CONTINUE
+    new arg[4]
+    read_argv(1, arg, charsmax(arg))
+    switch_cam(id, str_to_num(arg) != 0)
+    return PLUGIN_HANDLED
+}
+
+public cmd_specmode(id) {
+    return on_cameras(id) ? PLUGIN_HANDLED : PLUGIN_CONTINUE
+}
+
 // Runs every frame for every player, before the game handles their buttons.
 public fw_prethink(id) {
     if (!g_Watching[id]) return FMRES_IGNORED
@@ -411,13 +445,8 @@ public fw_prethink(id) {
     }
 
     // Clicks switch cameras too.
-    if (pressed & IN_ATTACK) {
-        g_Watching[id] = (g_Watching[id] % g_CamCount) + 1
-        show_cam(id)
-    } else if (pressed & IN_ATTACK2) {
-        g_Watching[id] = g_Watching[id] > 1 ? g_Watching[id] - 1 : g_CamCount
-        show_cam(id)
-    }
+    if (pressed & IN_ATTACK) switch_cam(id, false)
+    else if (pressed & IN_ATTACK2) switch_cam(id, true)
 
     // Hide the buttons from the game, so its spectator mode doesn't react to the clicks.
     set_pev(id, pev_button, 0)
