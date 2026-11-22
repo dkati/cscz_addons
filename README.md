@@ -6,7 +6,11 @@ from ingame UI: Only 'addons' enabled
 the newest commit on `main`, and if the game doesn't have it yet, downloads that version (~100 MB),
 installs it with its own installer and remembers the installed commit. Already up to date =
 nothing is downloaded. It also does the very first install on a PC without the mod.
-(`update.bat -Force` reinstalls anyway. `install.bat -Action Status` shows the installed version.)
+(`update.bat -Force` reinstalls anyway. To see the installed version, run
+`powershell -ExecutionPolicy Bypass -File scripts\cscz-mod.ps1 -Action Status`.)
+
+Every install shows what's new since the version you had, from `CHANGELOG.md`. When releasing a
+version, add a `## <version>` section at the top of `CHANGELOG.md` with one `- ` bullet per change.
 Players get a change only after it is committed and pushed to `main`.
 
 ## Install / uninstall

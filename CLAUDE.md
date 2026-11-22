@@ -42,6 +42,15 @@ scripts/update.ps1        the GitHub updater (OTA)
   still put its original files back over replaced ones (seen: `titles.txt` radio texts, menu
   background tiles). `-Force` skips the check. After big Steam updates, reinstall for the same reason.
 
+## Changelog
+
+- `CHANGELOG.md` (repo root): newest version first, `## <version>` then `- ` bullets, short and in
+  plain words. After every install the installer prints the entries newer than the previously
+  installed version (or the current version's entry on a first install / same-version reinstall)
+  and saves the version in `Half-Life\_cscz_mod_backup\version.txt` (shown by `-Action Status`).
+- With every release (the user's "uprev to v.X.Y.Z" commits): add the version's section at the top
+  of CHANGELOG.md and update the version text in the menu background tile `800_1_d`.
+
 ## Updater (OTA): update.bat + scripts/update.ps1
 
 - `update.bat` downloads the newest `scripts/update.ps1` from

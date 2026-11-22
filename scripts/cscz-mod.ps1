@@ -222,6 +222,54 @@ function Invoke-Uninstall {
     Write-Good 'Mod uninstalled. The game is back to how it was before the install.'
 }
 
+# --- changelog (CHANGELOG.md next to mod_pack: "## <version>" headings, "- " bullets, newest first)
+
+function Get-ChangelogPath { Join-Path (Split-Path -Parent $RepoRoot) 'CHANGELOG.md' }
+function Get-VersionFile   { Join-Path (Get-StateDir) 'version.txt' }
+
+function Read-Changelog {
+    $path = Get-ChangelogPath
+    $out = New-Object System.Collections.Generic.List[object]
+    if (-not [IO.File]::Exists($path)) { return $out }
+    $cur = $null
+    foreach ($line in [IO.File]::ReadAllLines($path, $Utf8NoBom)) {
+        if ($line -match '^##\s+v?(\d+(\.\d+){1,3})\s*$') {
+            $cur = [pscustomobject]@{ Version = $Matches[1]; Lines = New-Object System.Collections.Generic.List[string] }
+            $out.Add($cur)
+        } elseif ($cur -and $line.Trim()) {
+            $cur.Lines.Add($line.TrimEnd())
+        }
+    }
+    return $out
+}
+
+function Read-InstalledVersion {
+    $f = Get-VersionFile
+    if ([IO.File]::Exists($f)) { return [IO.File]::ReadAllText($f).Trim() }
+    return ''
+}
+
+# After an install: show what's new since the previously installed version (or, on a first install
+# or a reinstall of the same version, the current version's notes) and remember the new version.
+function Show-Changelog([string]$previous) {
+    $log = @(Read-Changelog)
+    if ($log.Count -eq 0) { return }
+    $newest = $log[0].Version
+    $show = @()
+    if ($previous) {
+        try { $show = @($log | Where-Object { [version]$_.Version -gt [version]$previous }) } catch { $show = @() }
+    }
+    if ($show.Count -eq 0) { $show = @($log[0]) }
+    Write-Info ''
+    if ($previous -and $previous -ne $newest) { Write-Good "What's new (you had $previous, now $newest):" }
+    else { Write-Good "Version ${newest}:" }
+    foreach ($entry in $show) {
+        Write-Host ("  v" + $entry.Version) -ForegroundColor Yellow
+        foreach ($l in $entry.Lines) { Write-Info ("    " + $l) }
+    }
+    [IO.File]::WriteAllText((Get-VersionFile), $newest)
+}
+
 function Test-GameStartedOnce {
     # The game writes czero\config.cfg the first time it runs.
     return [IO.File]::Exists((Join-Path $GameDir 'czero\config.cfg'))
@@ -238,6 +286,7 @@ function Invoke-Install {
         $script:exitCode = 2
         return
     }
+    $previousVersion = Read-InstalledVersion     # read before the uninstall below removes it
     if ([IO.Directory]::Exists((Get-StateDir))) {
         Write-Info 'The mod is already installed - removing the installed version first...'
         Invoke-Uninstall
@@ -305,6 +354,7 @@ function Invoke-Install {
 
     Write-Good 'Mod installed.'
     Write-Info "Backup of the replaced game files: $(Get-StateDir)"
+    Show-Changelog $previousVersion
 }
 
 function Show-Status {
@@ -313,6 +363,8 @@ function Show-Status {
     $header = [IO.File]::ReadAllLines((Get-Manifest), $Utf8NoBom) | Select-Object -First 1
     Write-Info 'Mod is installed.'
     Write-Info "  $header"
+    $ver = Read-InstalledVersion
+    if ($ver) { Write-Info "  Version: $ver" }
     $commitFile = Join-Path (Get-StateDir) 'commit.txt'
     if ([IO.File]::Exists($commitFile)) { Write-Info ("  GitHub version: " + [IO.File]::ReadAllText($commitFile).Trim()) }
     Write-Info ("  {0} added files, {1} replaced game files backed up" -f `
