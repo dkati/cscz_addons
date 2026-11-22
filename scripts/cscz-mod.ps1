@@ -60,6 +60,12 @@ $ExcludeNames = @(
     'tempdecal_moveToCzeroRoot.wad'
 )
 
+# Game files the installer marks read-only after copying (a download or git checkout does not keep
+# the flag). tempdecal.wad = the spray: read-only so Options > Multiplayer > OK can't replace it.
+$ReadOnlyDest = @(
+    'czero\tempdecal.wad'
+)
+
 # Game files that are never overwritten: the player's own settings.
 $ProtectedDest = @(
     'czero\config.cfg'
@@ -227,8 +233,9 @@ function Invoke-Install {
         Write-Bad 'On the first start Steam can still finish setting the game up and put its original'
         Write-Bad 'files back over the mod''s (for example the radio texts and the menu background).'
         Write-Info ''
-        Write-Info 'Please: start Condition Zero once, wait for the main menu, quit, then run install.bat again.'
+        Write-Info 'Please: start Condition Zero once, wait for the main menu, quit, then run install.bat (or update.bat) again.'
         Write-Info '(To install anyway: install.bat -Force)'
+        $script:exitCode = 2
         return
     }
     if ([IO.Directory]::Exists((Get-StateDir))) {
@@ -289,6 +296,9 @@ function Invoke-Install {
                 $writer.WriteLine("A`t" + $item.Dest)
             }
             Copy-FileForce $item.Src $dst
+            if ($ReadOnlyDest -contains $item.Dest) {
+                [IO.File]::SetAttributes($dst, [IO.File]::GetAttributes($dst) -bor [IO.FileAttributes]::ReadOnly)
+            }
         }
     }
     finally { $writer.Dispose() }
@@ -303,6 +313,8 @@ function Show-Status {
     $header = [IO.File]::ReadAllLines((Get-Manifest), $Utf8NoBom) | Select-Object -First 1
     Write-Info 'Mod is installed.'
     Write-Info "  $header"
+    $commitFile = Join-Path (Get-StateDir) 'commit.txt'
+    if ([IO.File]::Exists($commitFile)) { Write-Info ("  GitHub version: " + [IO.File]::ReadAllText($commitFile).Trim()) }
     Write-Info ("  {0} added files, {1} replaced game files backed up" -f `
         @($entries | Where-Object Kind -eq 'A').Count, @($entries | Where-Object Kind -eq 'R').Count)
 }

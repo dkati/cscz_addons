@@ -20,8 +20,9 @@ mod_pack/                 everything that goes into the game
   COPY TO ROOT/         -> Half-Life/
   COPY TO ROOT VALVE/   -> valve/
   COPY TO ROOT CZERO/   -> czero/            applied last, wins over czero_addon duplicates
-install.bat / uninstall.bat
+install.bat / uninstall.bat / update.bat
 scripts/cscz-mod.ps1      the installer (mapping table $Mappings at the top)
+scripts/update.ps1        the GitHub updater (OTA)
 ```
 
 ## Installer (scripts/cscz-mod.ps1)
@@ -40,6 +41,21 @@ scripts/cscz-mod.ps1      the installer (mapping table $Mappings at the top)
 - Install refuses a game that was never started (no `czero\config.cfg`): on the first start Steam can
   still put its original files back over replaced ones (seen: `titles.txt` radio texts, menu
   background tiles). `-Force` skips the check. After big Steam updates, reinstall for the same reason.
+
+## Updater (OTA): update.bat + scripts/update.ps1
+
+- `update.bat` downloads the newest `scripts/update.ps1` from
+  `raw.githubusercontent.com/dkati/cscz_addons/main` and runs it, so the updater logic is always the
+  pushed version. update.ps1 asks the GitHub API for the latest commit on `main`, compares it with
+  `Half-Life\_cscz_mod_backup\commit.txt`, and if different downloads
+  `codeload.github.com/dkati/cscz_addons/zip/<sha>` (~100 MB), unpacks it to `%TEMP%` and runs that
+  version's `scripts/cscz-mod.ps1 -Action Install`, then writes `commit.txt` (`<sha7> <date> <title>`).
+  It asks for admin rights itself before installing. Test offline with `-ZipFile <zip> -Commit <x>`.
+- The installer exits with code 2 when it refuses (never-started game) so the updater doesn't record
+  a version. `-Action Status` shows the recorded GitHub version.
+- The installer sets read-only itself on files in `$ReadOnlyDest` (the spray `czero	empdecal.wad`),
+  because zips and git checkouts don't keep that flag.
+- Players only get what is committed and pushed to `main`.
 
 ## How we work
 
@@ -176,8 +192,8 @@ scripts/cscz-mod.ps1      the installer (mapping table $Mappings at the top)
   `{NEW` / `0x43` (texture) lump looks right in texture tools but the game ignores it and sprays the
   default logo. (`czero_addon/tempdecal.wad` is the same file, overridden by the root copy.)
 - `tempdecal.wad` is read-only on purpose so Options → Multiplayer → OK (which rebuilds the spray from
-  `cl_logofile`, "lambda" by default) can't overwrite it. The installer keeps the read-only flag;
-  git does not store it, so set it again (`attrib +R`) after a fresh clone.
+  `cl_logofile`, "lambda" by default) can't overwrite it. The installer sets the read-only flag
+  itself (`$ReadOnlyDest`), so it doesn't matter that git and zips don't store it.
 - `custom.hpk` is the game's spray cache; keep it writable so the game can add the logo's entry.
 - `logos/remapped.bmp` holds the same picture as a normal logo file.
 

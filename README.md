@@ -1,5 +1,14 @@
 from ingame UI: Only 'addons' enabled
 
+## Update from GitHub (OTA)
+
+`update.bat` is all a player needs: download it once from this repo and double-click it. It checks
+the newest commit on `main`, and if the game doesn't have it yet, downloads that version (~100 MB),
+installs it with its own installer and remembers the installed commit. Already up to date =
+nothing is downloaded. It also does the very first install on a PC without the mod.
+(`update.bat -Force` reinstalls anyway. `install.bat -Action Status` shows the installed version.)
+Players get a change only after it is committed and pushed to `main`.
+
 ## Install / uninstall
 
 On a new PC: start Condition Zero once (wait for the main menu, then quit) before installing.
