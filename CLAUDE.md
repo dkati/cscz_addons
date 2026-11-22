@@ -37,6 +37,9 @@ scripts/cscz-mod.ps1      the installer (mapping table $Mappings at the top)
   folder (copies of only the affected files + `hl.exe`) and compare hashes after uninstall,
   never on the real game first.
 - After any mod change the user runs `install.bat` themself.
+- Install refuses a game that was never started (no `czero\config.cfg`): on the first start Steam can
+  still put its original files back over replaced ones (seen: `titles.txt` radio texts, menu
+  background tiles). `-Force` skips the check. After big Steam updates, reinstall for the same reason.
 
 ## How we work
 

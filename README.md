@@ -2,6 +2,11 @@ from ingame UI: Only 'addons' enabled
 
 ## Install / uninstall
 
+On a new PC: start Condition Zero once (wait for the main menu, then quit) before installing.
+On its first start Steam may still put its own files back over the mod's. The installer refuses
+to run on a game that was never started (`install.bat -Force` installs anyway). If after a Steam
+update the radio texts or the menu background look original again, run `install.bat` again.
+
 Close the game, then double-click:
 
 - `install.bat` copies the mod into `C:\Program Files (x86)\Steam\steamapps\common\Half-Life`.

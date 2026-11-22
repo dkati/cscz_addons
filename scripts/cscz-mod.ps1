@@ -12,6 +12,11 @@
   from the repo) are always applied against the original game files.
 
   Player settings (config.cfg) are never touched.
+
+  Install refuses to run on a game that has never been started (no czero\config.cfg yet):
+  on the first start Steam can still finish setting the game up and put its original files
+  back over the mod's (e.g. the radio texts and the menu background). Start the game once,
+  quit, then install. -Force installs anyway.
 #>
 param(
     [Parameter(Mandatory = $true)]
@@ -24,7 +29,10 @@ param(
     [switch]$DryRun,
 
     # Do not wait for Enter at the end (for running from a terminal).
-    [switch]$NoPause
+    [switch]$NoPause,
+
+    # Install even if the game has never been started.
+    [switch]$Force
 )
 
 $ErrorActionPreference = 'Stop'
@@ -208,7 +216,21 @@ function Invoke-Uninstall {
     Write-Good 'Mod uninstalled. The game is back to how it was before the install.'
 }
 
+function Test-GameStartedOnce {
+    # The game writes czero\config.cfg the first time it runs.
+    return [IO.File]::Exists((Join-Path $GameDir 'czero\config.cfg'))
+}
+
 function Invoke-Install {
+    if (-not $Force -and -not (Test-GameStartedOnce)) {
+        Write-Bad 'Condition Zero has never been started on this PC (czero\config.cfg is missing).'
+        Write-Bad 'On the first start Steam can still finish setting the game up and put its original'
+        Write-Bad 'files back over the mod''s (for example the radio texts and the menu background).'
+        Write-Info ''
+        Write-Info 'Please: start Condition Zero once, wait for the main menu, quit, then run install.bat again.'
+        Write-Info '(To install anyway: install.bat -Force)'
+        return
+    }
     if ([IO.Directory]::Exists((Get-StateDir))) {
         Write-Info 'The mod is already installed - removing the installed version first...'
         Invoke-Uninstall
