@@ -6,6 +6,7 @@
 //   Camera Script (I) (click change camera)
 //   Undead Script (K)
 //   Lifesteal Script (amx_lifesteal_pct 3)   (shows the current value; on = above 0)
+//   Hide Data (O)                            (always green; O hides this list and the kill stats)
 //
 // Each script keeps its own on/off state in a cvar; this plugin only reads them.
 // To add a script: add a line to LINES below (cvar name, "" = always on).
@@ -26,17 +27,17 @@
 #define HUD_COL_X 0.005      // same left edge as the stats box
 #define CH_ON   2
 #define CH_OFF  4
-#define LINES   4
+#define LINES   5
 
-new const g_Label[LINES][] = { "Pause Script",  "Camera Script",                 "Undead Script", "Lifesteal Script" }
-new const g_Cvar[LINES][]  = { "",              "amx_cams_on",                   "amx_undead_on", "amx_lifesteal_pct" }
-new const g_Keys[LINES][]  = { "(P)",           "(I) (click change camera)",     "(K)",           "(amx_lifesteal_pct %d)" }
+new const g_Label[LINES][] = { "Pause Script",  "Camera Script",                 "Undead Script", "Lifesteal Script",       "Hide Data" }
+new const g_Cvar[LINES][]  = { "",              "amx_cams_on",                   "amx_undead_on", "amx_lifesteal_pct",      "" }
+new const g_Keys[LINES][]  = { "(P)",           "(I) (click change camera)",     "(K)",           "(amx_lifesteal_pct %d)", "(O)" }
 
 new g_pCvar[LINES]
 new g_pColY
 
 public plugin_init() {
-    register_plugin("Hotkeys HUD", "1.6", "Author")
+    register_plugin("Hotkeys HUD", "1.7", "Author")
     g_pColY = register_cvar("amx_hudcol_y", "0.20")   // shared with stats.sma
     set_task(REFRESH, "refresh", _, _, _, "b")
     register_clcmd("pause_toggle", "cmd_pause")
@@ -63,6 +64,12 @@ public plugin_cfg() {
 }
 
 // Number of lines in the stats box this player sees (0 if the stats plugin isn't running).
+stats_hidden(id) {
+    if (callfunc_begin("stats_hidden", "stats.amxx") != 1) return 0
+    callfunc_push_int(id)
+    return callfunc_end()
+}
+
 stats_lines(id) {
     if (callfunc_begin("stats_lines", "stats.amxx") != 1) return 0
     callfunc_push_int(id)
@@ -90,6 +97,7 @@ public refresh() {
     new Float:y = get_pcvar_float(g_pColY)
     for (new j = 0; j < num; j++) {
         new id = players[j]
+        if (stats_hidden(id)) continue     // the player pressed O to hide the data
         // empty lines to skip over the stats box, plus one gap line if the box isn't empty
         new pad[128], plen = 0, skip = stats_lines(id)
         if (skip > 0) skip++

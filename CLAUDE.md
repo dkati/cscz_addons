@@ -58,7 +58,9 @@ scripts/cscz-mod.ps1      the installer (mapping table $Mappings at the top)
   - `stats` – one green box top-left (channel 1), sent per human player: own team's round wins +
     enemies alive, then CT headshots/kills with %, then CT HE kills. Kills come from
     `get_user_frags()` so they match the scoreboard; team kills don't count as headshot/HE. Cvar
-    `amx_hudcol_y` = top of the box (the key list follows below it). (Replaces the old
+    `amx_hudcol_y` = top of the box (the key list follows below it). O (`data_toggle`) is per player:
+    hides the kill/headshot/HE part and the key list, leaving the team lines plus "Press O to show
+    data"; public `stats_hidden(id)` tells hotkeys_hud. (Replaces the old
     `showenemies` + `headshot_pun`.)
   - `wallhack` – distance/direction to the last <5 enemies (center, channel 3, updated every 0.1 s)
   - `last_breath` – CT at <=10 HP (`amx_lastbreath_hp`, default 10) for >3 s can't die this round; big DHUD message
@@ -85,7 +87,8 @@ scripts/cscz-mod.ps1      the installer (mapping table $Mappings at the top)
     its script is on, red when off (no On/Off words): green lines in channel 2, red lines in channel 4,
     same position, empty lines as placeholders:
     "Pause Script (P)", "Camera Script (I) (click change camera)", "Undead Script (K)",
-    "Lifesteal Script (amx_lifesteal_pct 3)" (shows the current value; green while > 0). A `%d` in
+    "Lifesteal Script (amx_lifesteal_pct 3)" (shows the current value; green while > 0),
+    "Hide Data (O)" (always green). Not shown to players who hid the data with O. A `%d` in
     `g_Keys` is replaced by that line's cvar value.
     It only reads the other scripts' on/off cvars; a new script gets a line in its `g_Label/g_Cvar/
     g_Keys` tables.
@@ -98,8 +101,8 @@ scripts/cscz-mod.ps1      the installer (mapping table $Mappings at the top)
     (damage, heal, or why there was no heal).
   - `sequentialkills` – disabled; its `misc/*kill.wav` sounds don't exist
 - Extra keys are bound in `mod_pack/czero_addon/userconfig.cfg`: P = `pause_toggle`, I = `cams_toggle`,
-  K = `undead_toggle`, J is unbound (was lifesteal_toggle; CZ's "cheer" before that), L = `cam_chase`; O is unused (`unbind "o"`, it used to be a "next camera" key,
-  but clicks already do that). Every player can use all of them (no host/admin check). I and K turn
+  K = `undead_toggle`, J is unbound (was lifesteal_toggle; CZ's "cheer" before that), L = `cam_chase`, O = `data_toggle` (each player hides/shows their own
+  kill stats + key list; O used to be an unused "next camera" key). Every player can use all of them (no host/admin check). I and K turn
   a script on/off for everyone and show a big DHUD "Camera Script: On/Off (name)" / "Undead Script:
   On/Off (name)" to all. Turning undead off removes active protection. The on/off cvars keep their
   value across map changes. P (`pause_toggle`, in hotkeys_hud) announces "* name pressed Pause" and

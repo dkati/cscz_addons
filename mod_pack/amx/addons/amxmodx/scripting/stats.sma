@@ -17,6 +17,9 @@
 // frags kept when a player switches team). The plugin only counts what the scoreboard does not
 // track: headshots and HE kills (team kills don't count).
 //
+// O ("data_toggle"): each player can hide the kill / headshot / HE part and the key list
+// (hotkeys_hud); the box then shows "Press O to show data" under the team lines.
+//
 // Console setting (can be changed live):
 //   amx_hudcol_y  0.20   top of the box (0.0 = top .. 1.0 = bottom); the key list (hotkeys_hud)
 //                        follows right below it
@@ -37,14 +40,16 @@ new g_ScoreT = 0
 
 new g_pColY
 new g_Lines[33]     // lines in the last box sent to each player (read by hotkeys_hud)
+new bool:g_Hidden[33]   // player pressed O: kill stats (and the key list) hidden
 
 public plugin_init() {
-    register_plugin("Stats", "1.1", "Author")
+    register_plugin("Stats", "1.2", "Author")
 
     g_pColY = register_cvar("amx_hudcol_y", "0.20")
 
     register_event("DeathMsg", "event_deathmsg", "a")
     register_event("TeamScore", "event_team_score", "a")
+    register_clcmd("data_toggle", "cmd_data_toggle")   // O, bound in czero_addon/userconfig.cfg
     register_event("TextMsg", "event_game_restart", "a", "2=#Game_Commencing", "2=#Game_will_restart_in")
 
     // Refresh the box every second (and shortly after every death)
@@ -52,12 +57,26 @@ public plugin_init() {
 }
 
 // Used by hotkeys_hud.amxx (via callfunc) to place the key list right below this box.
+// "data_toggle" (bound to O): each player hides / shows their own kill stats and key list.
+public cmd_data_toggle(id) {
+    if (id < 1 || id > 32 || !is_user_connected(id)) return PLUGIN_HANDLED
+    g_Hidden[id] = !g_Hidden[id]
+    refresh_hud()
+    return PLUGIN_HANDLED
+}
+
+// Used by hotkeys_hud.amxx (via callfunc): 1 = this player has hidden the data.
+public stats_hidden(id) {
+    return (id >= 1 && id <= 32 && g_Hidden[id]) ? 1 : 0
+}
+
 public stats_lines(id) {
     return (id >= 1 && id <= 32) ? g_Lines[id] : 0
 }
 
 public client_disconnected(id) {
     g_Lines[id] = 0
+    g_Hidden[id] = false
     g_PlayerHeadshots[id] = 0
     g_PlayerHEKills[id] = 0
 }
@@ -175,7 +194,10 @@ public refresh_hud() {
         } else if (team == 2) {
             len += formatex(msg[len], charsmax(msg) - len, "Πόσες νίκις έχομι: %d^nΖωντανοί Γιούφτοι: %d^n", g_ScoreCT, numT)
         }
-        if (klen > 0) {
+        if (g_Hidden[id]) {
+            if (len > 0) len += formatex(msg[len], charsmax(msg) - len, "^n")
+            len += formatex(msg[len], charsmax(msg) - len, "Press O to show data^n")
+        } else if (klen > 0) {
             if (len > 0) len += formatex(msg[len], charsmax(msg) - len, "^n")
             len += formatex(msg[len], charsmax(msg) - len, "%s", kills)
         }
