@@ -149,6 +149,16 @@ scripts/update.ps1        the GitHub updater (OTA)
 - Always print prepared text with a format: `show_hudmessage(id, "%s", buf)`. Passing the buffer as
   the format eats `%` signs and breaks on names containing `%`.
 
+## Network (LAN games)
+
+- The engine defaults (`sv_maxupdaterate 30`, client `rate 30000`) choke on busy open maps like
+  `fy_$2000$` (~140 entities in view + 20 players): friends on the LAN see stutter, while the host
+  (no network) doesn't. `COPY TO ROOT CZERO/listenserver.cfg` (run at every map start) sets
+  `sv_maxrate 100000`, `sv_minrate 25000`, `sv_maxupdaterate 100`, `sv_minupdaterate 30`;
+  `userconfig.cfg` sets `rate 100000`, `cl_updaterate 100`, `cl_cmdrate 100` for every player.
+- To check a lag report: `net_graph 3` on the lagging player's PC; "choke" or "loss" above 0 means
+  network limits, a low fps value means drawing/CPU.
+
 ## Sounds
 
 - WAV, PCM 16-bit, mono, 22050 Hz, short; lowercase ASCII file names.

@@ -6,6 +6,7 @@ Format: a `## <version>` line, then one `- ` bullet per change.
 
 ## 5.1.2
 - Changelog: every install shows all changes since 5.0.0, the new ones marked (new)
+- LAN: less lag for friends on busy maps like $2000$ (higher network limits)
 
 ## 5.1.1
 - Updates from GitHub: double-click update.bat to get the newest version
