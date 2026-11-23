@@ -2,7 +2,8 @@
 #include <fun>
 
 // A CT player who stays alive with low health (amx_lastbreath_hp or less) for longer than
-// amx_lastbreath_time seconds cannot die for the rest of the round.
+// amx_lastbreath_time seconds cannot die for the rest of the round, or until their health rises
+// above amx_lastbreath_hp again (e.g. through life steal).
 // The protection is removed at the start of every new round.
 //
 // Console settings (can be changed live):
@@ -28,7 +29,7 @@ new g_pHp, g_pTime
 new g_pOn
 
 public plugin_init() {
-    register_plugin("Last Breath (CT)", "1.3", "Author")
+    register_plugin("Last Breath (CT)", "1.4", "Author")
 
     g_pHp = register_cvar("amx_lastbreath_hp", "10")
     g_pTime = register_cvar("amx_lastbreath_time", "3.0")
@@ -97,7 +98,16 @@ public check_players() {
 
     for (new i = 0; i < num; i++) {
         new id = players[i]
-        if (g_Protected[id]) continue
+
+        // Undead, but healed back above the limit (e.g. by life steal): back to normal.
+        // Dropping to the limit again starts a new countdown.
+        if (g_Protected[id]) {
+            if (get_user_health(id) > lowHp) {
+                set_user_godmode(id, 0)
+                reset_player(id)
+            }
+            continue
+        }
 
         if (get_user_health(id) > lowHp) {
             g_LowSince[id] = 0.0

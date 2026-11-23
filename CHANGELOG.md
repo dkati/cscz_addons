@@ -4,6 +4,9 @@ Newest version first. After every install the installer shows all versions of th
 release (e.g. everything since 5.0.0) and marks the ones that are new for you.
 Format: a `## <version>` line, then one `- ` bullet per change.
 
+## 5.1.3
+- Undead ends when life steal heals you above 10 HP (it used to last the whole round)
+
 ## 5.1.2
 - Changelog: every install shows all changes since 5.0.0, the new ones marked (new)
 - LAN: less lag for friends on busy maps like $2000$ (higher network limits)

@@ -62,7 +62,7 @@ scripts/update.ps1        the GitHub updater (OTA)
   It asks for admin rights itself before installing. Test offline with `-ZipFile <zip> -Commit <x>`.
 - The installer exits with code 2 when it refuses (never-started game) so the updater doesn't record
   a version. `-Action Status` shows the recorded GitHub version.
-- The installer sets read-only itself on files in `$ReadOnlyDest` (the spray `czero	empdecal.wad`),
+- The installer sets read-only itself on files in `$ReadOnlyDest` (the spray `czero\tempdecal.wad`),
   because zips and git checkouts don't keep that flag.
 - Players only get what is committed and pushed to `main`.
 
@@ -91,7 +91,8 @@ scripts/update.ps1        the GitHub updater (OTA)
     data"; public `stats_hidden(id)` tells hotkeys_hud. (Replaces the old
     `showenemies` + `headshot_pun`.)
   - `wallhack` – distance/direction to the last <5 enemies (center, channel 3, updated every 0.1 s)
-  - `last_breath` – CT at <=10 HP (`amx_lastbreath_hp`, default 10) for >3 s can't die this round; big DHUD message
+  - `last_breath` – CT at <=10 HP (`amx_lastbreath_hp`, default 10) for >3 s can't die this round, until
+    healed above it again (e.g. by life steal), then a new countdown is needed; big DHUD message
     "Α Λ Ι Μ Ο Ν Ο...εκδικηση στην αδικια" + sound `misc/alimono.wav` (cvars `amx_lastbreath_hp`,
     `amx_lastbreath_time`). On/off: cvar `amx_undead_on` (default 1).
   - `security_cams` – dead human players watch the map's fixed cameras (left/right click = next/prev
@@ -127,8 +128,8 @@ scripts/update.ps1        the GitHub updater (OTA)
     damage they really deal to enemies (victim's actual health loss, so no overkill), capped at max
     health, fractions carried over. No team/self damage. Humans see a green DHUD "+N" next to the (cvars `amx_lifesteal_x/y`, default 0.51)
     crosshair (0.5 s, then 0.5 s fade; hits within 0.15 s summed). No hotkey (J was
-    dropped: setting the cvar to 0 already turns it off). Leaves last_breath alone: healing above 10 HP just ends
-    its countdown. Nothing happens at full health. `amx_lifesteal_debug 1` explains every hit in the bottom-left text area and the console
+    dropped: setting the cvar to 0 already turns it off). Healing above 10 HP ends last_breath's countdown or its
+    protection (last_breath checks the health itself). Nothing happens at full health. `amx_lifesteal_debug 1` explains every hit in the bottom-left text area and the console
     (damage, heal, or why there was no heal).
   - `sequentialkills` – disabled; its `misc/*kill.wav` sounds don't exist
 - Extra keys are bound in `mod_pack/czero_addon/userconfig.cfg`: P = `pause_toggle`, I = `cams_toggle`,
