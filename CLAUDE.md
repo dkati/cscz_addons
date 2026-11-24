@@ -207,15 +207,23 @@ scripts/update.ps1        the GitHub updater (OTA)
 
 ## Spray logo
 
-- The mod's spray ("Defend JulMaYa") is `mod_pack/COPY TO ROOT CZERO/tempdecal.wad` (64×64). The game
-  only accepts it like the files it makes itself: one lump named `LOGO` with type `0x40` (decal). A
-  `{NEW` / `0x43` (texture) lump looks right in texture tools but the game ignores it and sprays the
-  default logo. (`czero_addon/tempdecal.wad` is the same file, overridden by the root copy.)
-- `tempdecal.wad` is read-only on purpose so Options → Multiplayer → OK (which rebuilds the spray from
-  `cl_logofile`, "lambda" by default) can't overwrite it. The installer sets the read-only flag
-  itself (`$ReadOnlyDest`), so it doesn't matter that git and zips don't store it.
-- `custom.hpk` is the game's spray cache; keep it writable so the game can add the logo's entry.
-- `logos/remapped.bmp` holds the same picture as a normal logo file.
+- Source picture: `art/spray_julmaya.png` (64×64, bright = logo, black = transparent).
+  `python -I scripts/make_spray.py` builds from it, the same way the game's options menu does:
+  - `czero_addon/logos/julmaya.bmp` – grayscale logo (palette entry i = gray i): shows in
+    Options > Multiplayer with a preview
+  - `czero_addon/logos/remapped.bmp` and `COPY TO ROOT CZERO/tempdecal.wad` – the logo in the chosen
+    color: palette entry i = int(color * i / 256), measured on the game's own files (Orange =
+    255 120 24; Light blue "#Valve_Ltblue" = 0 167 255 is used). tempdecal.wad = one lump `LOGO`,
+    type `0x40`, 6296 bytes, same layout as the game writes.
+- `userconfig.cfg` sets `cl_logofile "julmaya"` and `cl_logocolor "#Valve_Ltblue"`, so pressing OK in
+  Options rebuilds exactly the shipped spray. Nothing is read-only any more: the old read-only
+  tempdecal trick caused "could not save" errors. The installer clears read-only on everything it
+  copies (`$ReadOnlyDest` is empty).
+- Removed on purpose: `pldecal.wad` (the game ships none; the mod's had the broken `{NEW`/0x43 format),
+  the old `COPY TO ROOT CZERO/logos/remapped.bmp` (a different picture), duplicate tempdecal copies.
+- Game logos are always one color (the menu tints a gray ramp), so a multi-color spray isn't possible
+  through the menu.
+- `custom.hpk` is the game's spray cache; keep it writable.
 
 ## Images
 

@@ -60,11 +60,10 @@ $ExcludeNames = @(
     'tempdecal_moveToCzeroRoot.wad'
 )
 
-# Game files the installer marks read-only after copying (a download or git checkout does not keep
-# the flag). tempdecal.wad = the spray: read-only so Options > Multiplayer > OK can't replace it.
-$ReadOnlyDest = @(
-    'czero\tempdecal.wad'
-)
+# Game files the installer marks read-only after copying. Everything else is made writable, so a
+# read-only flag in the repo (or a zip) can never block the game. Empty on purpose: the spray is no
+# longer protected this way; the game rebuilds the same spray itself (see scripts/make_spray.py).
+$ReadOnlyDest = @()
 
 # Game files that are never overwritten: the player's own settings.
 $ProtectedDest = @(
@@ -115,6 +114,7 @@ function Copy-FileForce([string]$src, [string]$dst) {
     if (-not [IO.Directory]::Exists($dir)) { [void][IO.Directory]::CreateDirectory($dir) }
     Clear-ReadOnly $dst
     [IO.File]::Copy($src, $dst, $true)
+    Clear-ReadOnly $dst        # File.Copy also copies the source's read-only flag
 }
 
 function Test-Excluded([string]$name, [string]$destRel) {

@@ -5,6 +5,7 @@ release (e.g. everything since 5.0.0) and marks the ones that are new for you.
 Format: a `## <version>` line, then one `- ` bullet per change.
 
 ## 5.1.3
+- Spray: our logo is now in the Options logo list ("julmaya", light blue) and no more "could not save" errors
 - Undead ends when life steal heals you above 10 HP (it used to last the whole round)
 
 ## 5.1.2
